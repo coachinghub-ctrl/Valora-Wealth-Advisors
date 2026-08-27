@@ -131,9 +131,11 @@ section[id]{scroll-margin-top:96px}
 .hero::before{
   content:"";position:absolute;inset:0;
   background:
-    radial-gradient(900px 620px at 78% 22%,rgba(40,91,203,.34),transparent 62%),
-    radial-gradient(700px 520px at 92% 70%,rgba(201,168,76,.16),transparent 60%),
-    linear-gradient(160deg,#0A2350 0%,#081D42 45%,#050F26 100%);
+    linear-gradient(to bottom,rgba(8,29,66,.35) 0%,transparent 26%,rgba(5,15,38,.6) 100%),
+    linear-gradient(100deg,#081D42 0%,rgba(8,29,66,.96) 30%,rgba(8,29,66,.7) 52%,rgba(6,20,46,.42) 76%,rgba(5,15,38,.58) 100%),
+    radial-gradient(760px 520px at 84% 26%,rgba(40,91,203,.26),transparent 62%),
+    url("/assets/hero-skyline.jpg") center 58%/cover no-repeat,
+    var(--navy);
 }
 .hero::after{
   content:"";position:absolute;inset:0;opacity:.5;
@@ -252,11 +254,15 @@ section[id]{scroll-margin-top:96px}
 .diff{position:relative;overflow:hidden;background:var(--navy-deep)}
 .diff::before{
   content:"";position:absolute;inset:0;
-  background:radial-gradient(760px 520px at 82% 40%,rgba(201,168,76,.16),transparent 62%),
-             radial-gradient(620px 420px at 10% 80%,rgba(40,91,203,.22),transparent 60%);
+  background:
+    linear-gradient(95deg,#050F26 0%,rgba(5,15,38,.96) 32%,rgba(5,15,38,.68) 50%,rgba(5,15,38,.28) 70%,rgba(5,15,38,.5) 100%),
+    radial-gradient(700px 480px at 78% 46%,rgba(201,168,76,.14),transparent 62%),
+    url("/assets/ajedrez.jpg") right center/cover no-repeat,
+    var(--navy-deep);
 }
 .diff .wrap{position:relative;z-index:2}
-.diff-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(30px,5vw,72px);align-items:center}
+.diff-grid{display:block}
+.diff-grid>div{max-width:min(620px,56%)}
 .diff h2{font-family:var(--serif);font-size:clamp(29px,4vw,50px);font-weight:600;line-height:1.14;color:#fff}
 .diff p{margin-top:26px;font-size:15.5px;line-height:1.85;color:rgba(226,235,250,.74);max-width:56ch}
 .diff p+p{margin-top:18px}
@@ -264,8 +270,6 @@ section[id]{scroll-margin-top:96px}
   margin-top:30px;font-family:var(--serif);font-size:clamp(20px,2.2vw,27px);
   font-weight:700;color:var(--gold-light);line-height:1.35;
 }
-.diff-mark{display:grid;place-items:center}
-.diff-mark img{width:min(78%,300px);opacity:.95;filter:drop-shadow(0 24px 60px rgba(201,168,76,.35))}
 
 /* =========================================================
    PROTEGER / ACUMULAR / INTEGRAR
@@ -304,13 +308,23 @@ section[id]{scroll-margin-top:96px}
   text-align:center;font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;
   color:var(--ink-3);margin-bottom:18px;
 }
-.carrier-list{display:flex;flex-wrap:wrap;justify-content:center;gap:14px}
-.carrier-list span{
-  font-family:var(--serif);font-size:clamp(16px,1.7vw,21px);font-weight:700;color:var(--navy);
-  background:var(--white);border:1px solid rgba(8,29,66,.08);border-radius:var(--r);
-  padding:13px 24px;opacity:.82;transition:opacity .25s,transform .25s,border-color .25s;
+.carrier-list{
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:center;
+  gap:clamp(26px,4.5vw,58px);
 }
-.carrier-list span:hover{opacity:1;transform:translateY(-2px);border-color:rgba(201,168,76,.5)}
+.carrier-list li{display:flex;align-items:center;justify-content:center}
+.carrier-list img{
+  height:clamp(30px,3.2vw,42px);width:auto;max-width:200px;object-fit:contain;
+  opacity:.78;transition:opacity .3s ease,transform .3s ease;
+}
+.carrier-list li:hover img{opacity:1;transform:translateY(-2px)}
+/* el lockup de Dominion viene en blanco, para fondo oscuro */
+.carrier-list .c-dom img{filter:invert(1)}
+/* pendiente: falta el archivo oficial de Ever Insurance */
+.carrier-list .c-txt{
+  font-family:var(--serif);font-size:clamp(18px,2vw,24px);font-weight:700;
+  color:var(--navy);opacity:.72;transition:opacity .3s}
+.carrier-list .c-txt:hover{opacity:1}
 
 /* =========================================================
    QUÉ ES UN SEGURO DE VIDA
@@ -510,8 +524,12 @@ section[id]{scroll-margin-top:96px}
 .cta{position:relative;overflow:hidden;background:var(--navy-deep);text-align:center}
 .cta::before{
   content:"";position:absolute;inset:0;
-  background:radial-gradient(760px 500px at 50% 0%,rgba(40,91,203,.3),transparent 65%),
-             radial-gradient(700px 460px at 50% 110%,rgba(201,168,76,.18),transparent 62%);
+  background:
+    radial-gradient(760px 500px at 50% 0%,rgba(40,91,203,.26),transparent 66%),
+    linear-gradient(to bottom,rgba(5,15,38,.95) 0%,rgba(5,15,38,.78) 40%,rgba(5,15,38,.92) 100%),
+    radial-gradient(70% 60% at 50% 50%,rgba(5,15,38,.5),transparent 70%),
+    url("/assets/familia.jpg") center 64%/cover no-repeat,
+    var(--navy-deep);
 }
 .cta .wrap{position:relative;z-index:2}
 .cta img{width:70px;margin:0 auto 30px;opacity:.92}
@@ -563,8 +581,7 @@ section[id]{scroll-margin-top:96px}
   .pillar ul{grid-column:2/-1}
   .steps{grid-template-columns:1fr 1fr;gap:34px 0}
   .step+.step:nth-child(odd)::before{display:none}
-  .why-grid,.form-grid,.founders,.two-col,.sys-head,.diff-grid{grid-template-columns:1fr}
-  .diff-mark{display:none}
+  .why-grid,.form-grid,.founders,.two-col,.sys-head{grid-template-columns:1fr}
   .ftr-grid{grid-template-columns:1fr 1fr}
   .ftr-brand{grid-column:1/-1}
 }
@@ -757,4 +774,24 @@ section[id]{scroll-margin-top:96px}
 }
 @media (max-width:520px){
   .bp-step,.timeline li{flex:0 0 100%}
+}
+
+
+/* fotos de fondo en pantallas pequeñas: el texto manda */
+@media (max-width:900px){
+  .diff-grid>div{max-width:none}
+  .diff::before{
+    background:
+      linear-gradient(to bottom,rgba(5,15,38,.93),rgba(5,15,38,.88)),
+      url("/assets/ajedrez.jpg") center/cover no-repeat,
+      var(--navy-deep);
+  }
+}
+@media (max-width:860px){
+  .hero::before{
+    background:
+      linear-gradient(to bottom,rgba(8,29,66,.92) 0%,rgba(8,29,66,.86) 45%,rgba(5,15,38,.8) 100%),
+      url("/assets/hero-skyline.jpg") center bottom/cover no-repeat,
+      var(--navy);
+  }
 }

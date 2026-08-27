@@ -99,17 +99,16 @@ registros SPF/DKIM/DMARC en la misma zona DNS.
 - **Correo:** el pie usa `info@valoraprotection.com` mientras el sitio vive en
   `valorawealthadvisors.com`. Conviene unificarlo.
 
-### Imágenes del mockup que no tengo
-El mockup usa tres fotografías que no están entre los archivos entregados; en su
-lugar hay degradados y la marca en dorado:
+### Logos de los carriers
+Los ocho logos de `assets/carriers/` se descargaron de los sitios oficiales de
+cada compañía (John Hancock desde Wikimedia Commons, porque su CDN bloquea la
+descarga directa). **Son marcas registradas:** casi todos los carriers exigen
+aprobación previa del agente y tienen guías de marca sobre tamaño, espacio libre
+y contexto de uso. Conviene validarlo con el marketing rep de cada compañía
+antes de publicar.
 
-- skyline nocturno detrás de los fundadores en el hero
-- tablero de ajedrez con el rey dorado en «El diferenciador»
-- familia al atardecer en el cierre
+Falta el archivo oficial de **Ever Insurance** — su dominio está aparcado y no
+encontré el sitio activo. Por ahora aparece compuesto tipográficamente.
 
-También faltan los **logotipos reales de los carriers** (John Hancock, National
-Life Group, Corebridge, etc.); ahora se componen tipográficamente.
-
-### Navegación
-El mockup incluye **RECURSOS** y **CONTACTO** en el menú. No están porque no hay
-páginas detrás; el menú actual solo ancla a secciones de esta misma página.
+El lockup de Dominion viene en blanco (pensado para fondo oscuro); se invierte
+por CSS con `filter:invert(1)` en `.carrier-list .c-dom img`.

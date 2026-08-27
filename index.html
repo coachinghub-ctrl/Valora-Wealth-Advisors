@@ -25,6 +25,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="/assets/hero-skyline.jpg" fetchpriority="high">
 <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
@@ -203,7 +204,6 @@
         </p>
         <p class="punch">No competimos por precio. Competimos por estructura.</p>
       </div>
-      <div class="diff-mark rv"><img src="/assets/mark.png" alt="" width="300"></div>
     </div>
   </div>
 </section>
@@ -351,15 +351,22 @@
     <h2>Nuestros socios estratégicos</h2>
     <div class="carrier-row">
       <p class="tag">Estados Unidos</p>
-      <div class="carrier-list">
-        <span>John Hancock</span><span>National Life Group</span><span>Corebridge Financial</span><span>American Fidelity</span>
-      </div>
+      <ul class="carrier-list">
+        <li class="c-jh"><img src="/assets/carriers/john-hancock.svg" alt="John Hancock" loading="lazy"></li>
+        <li class="c-nlg"><img src="/assets/carriers/national-life.png" alt="National Life Group" loading="lazy"></li>
+        <li class="c-cb"><img src="/assets/carriers/corebridge.svg" alt="Corebridge Financial" loading="lazy"></li>
+        <li class="c-af"><img src="/assets/carriers/american-fidelity.svg" alt="American Fidelity" loading="lazy"></li>
+      </ul>
     </div>
     <div class="carrier-row">
       <p class="tag">Latinoamérica</p>
-      <div class="carrier-list">
-        <span>Investors Trust</span><span>Dominion Capital Strategies</span><span>Manhattan Trust</span><span>VUMI</span><span>Ever Insurance</span>
-      </div>
+      <ul class="carrier-list">
+        <li class="c-it"><img src="/assets/carriers/investors-trust.png" alt="Investors Trust" loading="lazy"></li>
+        <li class="c-dom"><img src="/assets/carriers/dominion.webp" alt="Dominion Capital Strategies" loading="lazy"></li>
+        <li class="c-mt"><img src="/assets/carriers/manhattan-trust.svg" alt="Manhattan Trust" loading="lazy"></li>
+        <li class="c-vumi"><img src="/assets/carriers/vumi.svg" alt="VUMI" loading="lazy"></li>
+        <li class="c-txt">Ever Insurance</li>
+      </ul>
     </div>
   </div>
 </section>
