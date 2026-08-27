@@ -83,11 +83,33 @@ registros SPF/DKIM/DMARC en la misma zona DNS.
 
 ## Pendientes
 
+### Contenido que falta
+- **Testimonios:** las tres tarjetas de «Lo que dicen nuestras familias» traen el
+  texto de ejemplo del mockup, con nombres y ciudades inventados. Son
+  declaraciones atribuidas a personas reales: **hay que reemplazarlas por
+  testimonios auténticos y autorizados antes de publicar.**
+- **Redes sociales:** los cuatro enlaces del pie apuntan a `#`. Faltan las URLs
+  de Facebook, Instagram, YouTube y LinkedIn.
 - **WhatsApp:** la constante `WHATSAPP` al inicio de `script.js` está vacía.
   Con el número en formato internacional (`13051234567`), el botón «Hablar con
   un estratega» y el mensaje de respaldo del formulario pasan a WhatsApp.
-  Vacía, ambos llevan al formulario y al correo.
+- **Páginas legales:** el pie enlaza `/aviso-legal`, `/privacidad` y
+  `/terminos`, que todavía no existen. Además faltan las divulgaciones de
+  licencias de seguros que suelen exigirse en USA.
 - **Correo:** el pie usa `info@valoraprotection.com` mientras el sitio vive en
   `valorawealthadvisors.com`. Conviene unificarlo.
-- **Legales:** falta aviso legal, política de privacidad y las divulgaciones de
-  licencias de seguros que suelen exigirse en USA.
+
+### Imágenes del mockup que no tengo
+El mockup usa tres fotografías que no están entre los archivos entregados; en su
+lugar hay degradados y la marca en dorado:
+
+- skyline nocturno detrás de los fundadores en el hero
+- tablero de ajedrez con el rey dorado en «El diferenciador»
+- familia al atardecer en el cierre
+
+También faltan los **logotipos reales de los carriers** (John Hancock, National
+Life Group, Corebridge, etc.); ahora se componen tipográficamente.
+
+### Navegación
+El mockup incluye **RECURSOS** y **CONTACTO** en el menú. No están porque no hay
+páginas detrás; el menú actual solo ancla a secciones de esta misma página.
