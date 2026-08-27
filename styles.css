@@ -423,6 +423,8 @@ section[id]{scroll-margin-top:96px}
              radial-gradient(640px 460px at 88% 84%,rgba(201,168,76,.14),transparent 60%);
 }
 .form-sec .wrap{position:relative;z-index:2}
+.form-sec .h2,.form-sec .h3{color:#fff}
+.form-sec .lead{color:rgba(226,235,250,.72)}
 .form-grid{display:grid;grid-template-columns:.88fr 1.12fr;gap:clamp(30px,5vw,70px);align-items:start}
 .form-aside .h2{font-size:clamp(28px,3.5vw,44px)}
 .assur{display:grid;gap:14px;margin-top:32px}
