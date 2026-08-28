@@ -2,7 +2,7 @@
    POST /api/lead — recibe el formulario y lo envía por correo.
    Variables de entorno en Vercel:
      RESEND_API_KEY  clave de Resend
-     LEAD_TO         destino, p.ej. info@valoraprotection.com
+     LEAD_TO         destino, p.ej. info@valorawealthadvisors.com
      LEAD_FROM       remitente verificado, p.ej. VALORA <web@valorawealthadvisors.com>
    ========================================================= */
 

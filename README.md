@@ -59,7 +59,7 @@ En **Settings → Environment Variables** del proyecto:
 | Variable | Valor |
 |---|---|
 | `RESEND_API_KEY` | la clave de Resend |
-| `LEAD_TO` | a dónde llegan los leads, p. ej. `info@valoraprotection.com` (acepta varios separados por coma) |
+| `LEAD_TO` | a dónde llegan los leads, p. ej. `info@valorawealthadvisors.com` (acepta varios separados por coma) |
 | `LEAD_FROM` | remitente verificado en Resend, p. ej. `VALORA <web@valorawealthadvisors.com>` |
 
 Sin estas tres variables el endpoint responde 500 y la página muestra el
@@ -96,8 +96,8 @@ registros SPF/DKIM/DMARC en la misma zona DNS.
 - **Páginas legales:** el pie enlaza `/aviso-legal`, `/privacidad` y
   `/terminos`, que todavía no existen. Además faltan las divulgaciones de
   licencias de seguros que suelen exigirse en USA.
-- **Correo:** el pie usa `info@valoraprotection.com` mientras el sitio vive en
-  `valorawealthadvisors.com`. Conviene unificarlo.
+- **Correo:** el pie enlaza `info@valorawealthadvisors.com`. Hay que confirmar
+  que ese buzón existe antes de publicar, o el correo rebotará.
 
 ### Logos de los carriers
 Los ocho logos de `assets/carriers/` se descargaron de los sitios oficiales de

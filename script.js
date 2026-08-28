@@ -93,7 +93,7 @@
   var contactLine = function () {
     return WHATSAPP
       ? ' Escríbenos por <a href="https://wa.me/' + WHATSAPP + '" target="_blank" rel="noopener">WhatsApp</a>.'
-      : ' Escríbenos a <a href="mailto:info@valoraprotection.com">info@valoraprotection.com</a>.';
+      : ' Escríbenos a <a href="mailto:info@valorawealthadvisors.com">info@valorawealthadvisors.com</a>.';
   };
 
   form.addEventListener('submit', function (ev) {

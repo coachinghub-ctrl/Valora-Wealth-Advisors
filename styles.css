@@ -164,6 +164,10 @@ section[id]{scroll-margin-top:96px}
   background:radial-gradient(circle,rgba(201,168,76,.2),rgba(40,91,203,.12) 45%,transparent 70%);
 }
 .founders-img{position:relative;display:flex;align-items:flex-end;justify-content:center;width:100%}
+.founders-img{
+  -webkit-mask-image:linear-gradient(to bottom,#000 90%,transparent 100%);
+  mask-image:linear-gradient(to bottom,#000 90%,transparent 100%);
+}
 .founders-img img{
   width:56%;filter:drop-shadow(0 26px 50px rgba(0,0,0,.55));
 }
@@ -171,7 +175,7 @@ section[id]{scroll-margin-top:96px}
 .founders-img img:last-child{z-index:1}
 
 .founders-card{
-  position:relative;margin-top:-14px;
+  position:relative;z-index:3;margin-top:clamp(-84px,-5.5vw,-56px);
   background:linear-gradient(135deg,rgba(12,42,92,.92),rgba(8,29,66,.92));
   border:1px solid var(--navy-line);border-radius:var(--r);
   backdrop-filter:blur(12px);padding:24px 26px;
