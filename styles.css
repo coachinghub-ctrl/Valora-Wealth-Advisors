@@ -578,7 +578,7 @@ section[id]{scroll-margin-top:96px}
 /* =========================================================
    FOOTER
    ========================================================= */
-.ftr{background:#040B1B;color:rgba(226,235,250,.62);padding-block:clamp(52px,6vw,76px) 0;font-size:13.5px}
+.ftr{background:var(--navy);color:rgba(226,235,250,.66);padding-block:clamp(52px,6vw,76px) 0;font-size:13.5px}
 .ftr-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:clamp(28px,4vw,52px)}
 .ftr-brand img{width:170px;margin-bottom:9px}
 .lockup-tag{
@@ -1274,4 +1274,83 @@ section[id]{scroll-margin-top:96px}
 @media (max-width:980px){
   .rutas-grid{grid-template-columns:1fr}
   .fw{grid-template-columns:1fr}
+}
+
+/* =========================================================
+   FONDOS DE LAS SECCIONES AZULES
+   La V de marca como filigrana, y una veladura fotográfica
+   donde el bloque de texto es largo. Todo por debajo del
+   contenido y a opacidad muy baja: acompaña, no compite.
+   ========================================================= */
+.rutas,.creencias,.vida,#seguro{position:relative;overflow:hidden}
+.rutas>.wrap,.creencias>.wrap,.vida>.wrap,#seguro>.wrap{position:relative;z-index:2}
+
+.rutas::before,.creencias::before,.vida::before,#seguro::before{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+}
+.rutas::after,.creencias::after,.vida::after,#seguro::after{
+  content:"";position:absolute;pointer-events:none;z-index:1;
+  background:url("/assets/mark.png") no-repeat center/contain;
+}
+
+/* ── A quién servimos: skyline al fondo, V arriba a la derecha ── */
+.rutas::before{
+  background:
+    linear-gradient(105deg,var(--navy) 12%,rgba(8,29,66,.93) 45%,rgba(8,29,66,.88) 100%),
+    url("/assets/hero-skyline.jpg") center 62%/cover no-repeat;
+}
+.rutas::after{
+  top:-6%;right:-6%;width:min(46%,540px);aspect-ratio:1.35;opacity:.05;
+}
+
+/* ── El seguro: la V grande, saliendo por la derecha ── */
+#seguro::before{
+  background:radial-gradient(900px 620px at 82% 30%,rgba(40,91,203,.26),transparent 64%);
+}
+#seguro::after{
+  top:8%;right:-10%;width:min(52%,620px);aspect-ratio:1.35;opacity:.06;
+}
+
+/* ── En qué creemos: ajedrez muy velado, V a la izquierda ── */
+.creencias::before{
+  background:
+    linear-gradient(255deg,var(--navy) 14%,rgba(8,29,66,.94) 48%,rgba(8,29,66,.9) 100%),
+    url("/assets/ajedrez.jpg") left center/cover no-repeat;
+}
+.creencias::after{
+  bottom:-8%;left:-8%;width:min(42%,500px);aspect-ratio:1.35;opacity:.045;
+}
+
+/* ── Tu vida: solo la filigrana, que la línea manda ── */
+.vida::before{
+  background:radial-gradient(760px 420px at 18% 50%,rgba(40,91,203,.2),transparent 66%);
+}
+.vida::after{
+  top:50%;right:2%;transform:translateY(-50%);width:min(24%,260px);aspect-ratio:1.35;opacity:.05;
+}
+
+@media (max-width:760px){
+  .rutas::after,#seguro::after,.creencias::after,.vida::after{opacity:.035}
+}
+
+/* =========================================================
+   ¿POR QUÉ VALORA? sobre fondo claro
+   Iba justo detrás de «En qué creemos» y las dos azules se
+   leían como un solo bloque sin respiro.
+   ========================================================= */
+.porque{background:var(--cream)}
+.porque .eyebrow{color:var(--gold-deep)}
+.porque .h2{color:var(--navy)}
+.porque .lead{color:var(--ink-2)}
+.porque .why-list li{border-bottom-color:rgba(8,29,66,.1)}
+.porque .why-list b{color:var(--navy)}
+.porque .why-list p{color:var(--ink-2)}
+.porque .why-check{border-color:rgba(201,168,76,.6);color:var(--gold-deep)}
+/* la cita se mantiene oscura: es la pieza de contraste de la sección */
+.porque .why-quote{
+  border-color:rgba(8,29,66,.08);
+  background:
+    radial-gradient(600px 400px at 50% 100%,rgba(40,91,203,.35),transparent 65%),
+    var(--navy);
+  box-shadow:0 1px 2px rgba(8,29,66,.05),0 26px 60px -34px rgba(8,29,66,.5);
 }
