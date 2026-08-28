@@ -1171,11 +1171,11 @@ section[id]{scroll-margin-top:96px}
    ========================================================= */
 .cre-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:44px}
 .cre{
-  background:rgba(255,255,255,.04);border:1px solid rgba(201,168,76,.22);
+  background:rgba(255,255,255,.07);border:1px solid rgba(201,168,76,.26);
   border-radius:var(--r);padding:28px 26px;
-  transition:border-color .3s ease,transform .3s ease;
+  transition:border-color .3s ease,transform .3s ease,background .3s ease;
 }
-.cre:hover{border-color:rgba(201,168,76,.5);transform:translateY(-3px)}
+.cre:hover{border-color:rgba(201,168,76,.55);background:rgba(255,255,255,.09);transform:translateY(-3px)}
 .cre-tag{
   font-family:var(--brand);font-size:11px;font-weight:600;letter-spacing:.22em;
   text-transform:uppercase;color:var(--gold);margin-bottom:14px;
@@ -1191,7 +1191,7 @@ section[id]{scroll-margin-top:96px}
 .val-list li{min-width:0}
 .val-ico{
   display:grid;place-items:center;width:44px;height:44px;border-radius:50%;margin-bottom:14px;
-  border:1px solid rgba(201,168,76,.34);background:rgba(201,168,76,.07);color:var(--gold-light);
+  border:1px solid rgba(201,168,76,.4);background:rgba(201,168,76,.12);color:var(--gold-light);
 }
 .val-ico svg{width:21px;height:21px}
 .val-list b{
@@ -1261,7 +1261,7 @@ section[id]{scroll-margin-top:96px}
   display:grid;grid-template-columns:1.25fr .75fr;gap:clamp(24px,3.4vw,48px);align-items:center;
   margin-top:40px;padding:clamp(26px,3vw,38px);border-radius:var(--r);
   border:1px solid rgba(201,168,76,.3);
-  background:radial-gradient(600px 300px at 15% 0%,rgba(40,91,203,.24),transparent 65%),rgba(255,255,255,.04);
+  background:radial-gradient(600px 300px at 15% 0%,rgba(40,91,203,.28),transparent 65%),rgba(255,255,255,.07);
 }
 .fw-txt p{font-size:14.5px;line-height:1.78;color:rgba(226,235,250,.8)}
 .fw-nota{margin-top:14px;font-size:13px !important;color:rgba(226,235,250,.58) !important}
