@@ -675,7 +675,9 @@ section[id]{scroll-margin-top:96px}
 
 .bp-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:clamp(28px,4.4vw,58px);align-items:center}
 .blueprint{background:var(--cream)}
+.bp-oferta{font-family:var(--serif);font-size:clamp(31px,3.9vw,50px);line-height:1.1}
 .bp-kicker{margin-top:18px;font-size:14px;font-weight:600;color:var(--navy)}
+.bp-cta{margin-top:26px}
 .bp-flow{display:flex;align-items:flex-start;justify-content:space-between;gap:clamp(6px,1.2vw,16px)}
 .bp-step{flex:1;text-align:center;min-width:0}
 .bp-ico{
