@@ -227,10 +227,11 @@ section[id]{scroll-margin-top:96px}
 .card:hover{transform:translateY(-5px);box-shadow:0 26px 54px -30px rgba(8,29,66,.4);border-color:rgba(201,168,76,.4)}
 .card:hover::before{transform:scaleX(1)}
 .card-ico{
-  width:52px;height:52px;border-radius:50%;display:grid;place-items:center;margin-bottom:22px;
+  width:68px;height:68px;border-radius:50%;display:grid;place-items:center;
+  margin:0 auto 24px;
   background:linear-gradient(135deg,var(--navy),var(--navy-soft));color:var(--gold-light);
 }
-.card-ico svg{width:23px;height:23px}
+.card-ico svg{width:31px;height:31px}
 .card h3{font-family:var(--serif);font-size:26px;font-weight:700;color:var(--navy)}
 .card .sub{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-deep);margin:8px 0 18px;font-weight:600}
 .card .body{font-size:14.5px;line-height:1.75;color:var(--ink-2)}
