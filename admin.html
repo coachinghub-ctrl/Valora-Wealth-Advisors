@@ -21,7 +21,9 @@
     <img src="/assets/mark.png" alt="" width="46">
     <h1>VALORA<br><span>Operating System</span></h1>
     <p>Panel interno del equipo.</p>
-    <label for="cr-pass">Contraseña</label>
+    <label for="cr-email">Correo</label>
+    <input id="cr-email" type="email" autocomplete="username" required>
+    <label for="cr-pass" style="margin-top:16px">Contraseña</label>
     <input id="cr-pass" type="password" autocomplete="current-password" required>
     <button class="btn btn-gold" type="submit" id="cr-enter">Entrar</button>
     <p class="cr-gate-msg" id="cr-gate-msg" role="status" aria-live="polite"></p>
@@ -45,6 +47,8 @@
         <button class="cr-f" data-nivel="NUTRIR">Nutrir</button>
       </div>
       <button class="cr-refresh" id="cr-refresh" title="Actualizar">↻</button>
+      <button class="cr-out" id="cr-equipo" hidden>Equipo</button>
+      <span class="cr-yo" id="cr-yo"></span>
       <button class="cr-out" id="cr-out">Salir</button>
     </div>
   </header>
@@ -54,6 +58,57 @@
 </div>
 
 <!-- ══════ ficha ══════ -->
+<!-- ══════ equipo ══════ -->
+<div class="cr-sheet" id="cr-team" hidden aria-label="Equipo">
+  <header class="cr-sheet-top">
+    <div>
+      <p class="cr-p-sec" style="margin:0">Administración</p>
+      <h2>Equipo</h2>
+    </div>
+    <div class="cr-sheet-acts">
+      <button class="cr-close" id="cr-team-close" aria-label="Cerrar">✕</button>
+    </div>
+  </header>
+
+  <div class="cr-team-body">
+    <section class="cr-bloque">
+      <h3>Personas con acceso</h3>
+      <div id="cr-team-list"></div>
+    </section>
+
+    <section class="cr-bloque">
+      <h3>Dar de alta</h3>
+      <form id="cr-team-new">
+        <div class="ag-field"><label for="nu-nombre">Nombre</label>
+          <input id="nu-nombre" type="text" placeholder="Ej. Ana Gómez"></div>
+        <div class="ag-field"><label for="nu-email">Correo</label>
+          <input id="nu-email" type="email" autocomplete="off" placeholder="ana@valorawealthadvisors.com"></div>
+        <div class="ag-field"><label for="nu-rol">Rol</label>
+          <select id="nu-rol">
+            <option value="agente">Agente — solo ve los contactos que le asignen</option>
+            <option value="admin">Administrador — ve todo y reparte</option>
+          </select></div>
+        <div class="ag-field"><label for="nu-clave">Contraseña inicial (mínimo 10 caracteres)</label>
+          <input id="nu-clave" type="text" autocomplete="off" placeholder="La cambiará al entrar"></div>
+        <button class="btn btn-gold" type="submit" id="nu-alta">Crear cuenta</button>
+        <p class="cr-p-msg" id="nu-msg"></p>
+      </form>
+    </section>
+
+    <section class="cr-bloque">
+      <h3>Mi contraseña</h3>
+      <form id="cr-mi-clave">
+        <div class="ag-field"><label for="mc-actual">Contraseña actual</label>
+          <input id="mc-actual" type="password" autocomplete="current-password"></div>
+        <div class="ag-field"><label for="mc-nueva">Nueva contraseña (mínimo 10)</label>
+          <input id="mc-nueva" type="password" autocomplete="new-password"></div>
+        <button class="btn btn-gold" type="submit">Cambiar</button>
+        <p class="cr-p-msg" id="mc-msg"></p>
+      </form>
+    </section>
+  </div>
+</div>
+
 <!-- ══════ sesión de diagnóstico ══════ -->
 <div class="cr-sheet" id="cr-sheet" hidden aria-label="Perfil financiero">
   <header class="cr-sheet-top">

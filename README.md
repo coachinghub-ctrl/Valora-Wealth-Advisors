@@ -92,8 +92,10 @@ En **Settings → Environment Variables** del proyecto:
 | `LEAD_FROM` | remitente verificado en Resend, p. ej. `VALORA <web@valorawealthadvisors.com>` |
 | `KV_REST_API_URL` | almacén de contactos — la crea la integración de Upstash |
 | `KV_REST_API_TOKEN` | idem |
-| `ADMIN_PASSWORD` | contraseña de entrada al panel |
-| `ADMIN_SECRET` | cadena larga y aleatoria para firmar la cookie de sesión |
+| `ADMIN_SECRET` | cadena larga y aleatoria para firmar la sesión |
+| `ADMIN_EMAIL` | correo del primer administrador |
+| `ADMIN_PASSWORD` | su contraseña inicial — solo sirve para crear esa cuenta |
+| `BLOB_READ_WRITE_TOKEN` | archivos de los clientes — la crea la integración de Blob |
 
 **El almacén** se añade desde el panel de Vercel: *Storage → Marketplace →
 Upstash for Redis*. Al conectarlo, Vercel inyecta `KV_REST_API_URL` y
@@ -122,18 +124,40 @@ otros umbrales o con otra fórmula de cobertura, se cambian en `calcular()`
 dentro de `admin.js`. **Es una hoja de trabajo interna para un agente
 licenciado, no un cálculo que se le entregue al cliente como asesoría.**
 
-**El panel** no abre sin `ADMIN_PASSWORD` y `ADMIN_SECRET`: no hay
-contraseña por defecto en el código. Para el secreto sirve cualquier
-cadena larga; una forma de generarla:
+**Los archivos** se guardan en Vercel Blob: *Storage → Marketplace → Blob*.
+
+### Cuentas y roles
+Cada persona entra con su propio correo y contraseña. Hay dos roles:
+
+- **Administrador** — ve todos los contactos, los reparte entre agentes y
+  gestiona el equipo.
+- **Agente** — ve únicamente los contactos que tiene asignados. El filtro
+  se aplica en el servidor, no en el navegador: aunque manipule la página,
+  la API no le devuelve lo que no es suyo.
+
+`ADMIN_EMAIL` y `ADMIN_PASSWORD` solo sirven para **crear la primera
+cuenta**: la primera vez que ese correo entra, se guarda como
+administrador y a partir de ahí manda el almacén. Desde *Equipo* se dan
+de alta los demás. El sistema no permite quedarse sin ningún
+administrador activo.
+
+Las contraseñas se guardan con `scrypt` y sal por usuario — nunca en
+claro. La sesión es una cookie firmada, `HttpOnly` y `Secure`, de 12 horas.
+Para el secreto sirve cualquier cadena larga:
 
 ```bash
 openssl rand -hex 32
 ```
 
-La sesión es una cookie firmada, `HttpOnly` y `Secure`, que dura 12 horas.
-Es una puerta con contraseña compartida, adecuada para un equipo pequeño;
-si algún día entran varios agentes con permisos distintos, habrá que
-cambiarla por cuentas individuales.
+Cuando des de alta a alguien, **pásale la contraseña inicial por un canal
+seguro**, no por correo. Puede cambiarla desde *Equipo → Mi contraseña*.
+
+### Archivos del cliente
+Cada ficha admite archivos de hasta 3 MB — PDF, imágenes, Word, Excel y
+texto. **No se enlazan directamente:** la URL del blob nunca sale del
+servidor. El panel los pide a `/api/archivos`, que comprueba la sesión y
+que el contacto sea tuyo antes de devolver un solo byte. Un agente no
+puede abrir los archivos de un contacto que no tiene asignado.
 
 Sin estas tres variables el endpoint responde 500 y la página muestra el
 mensaje de respaldo. Hay que redeployar después de agregarlas.
@@ -162,6 +186,8 @@ guardada junto al nombre, el teléfono y el correo. Es un dato sensible:
 
 - la política de privacidad tiene que decir qué se recoge, para qué y
   cuánto tiempo se conserva — y todavía no existe
+- con los archivos entran documentos financieros y, probablemente,
+  identificaciones: hay que acordar qué se admite y qué no
 - el acceso al panel debe limitarse a quien realmente lo necesite
 - conviene decidir un plazo de borrado para los contactos que no prosperan
 

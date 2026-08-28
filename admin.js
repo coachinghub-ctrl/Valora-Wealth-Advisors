@@ -17,6 +17,8 @@
   ];
 
   var leads = [];
+  var yo = null;
+  var equipo = [];
   var filtroNivel = '';
   var busqueda = '';
   var abierto = null;
@@ -45,10 +47,17 @@
   /* ---------- puerta ---------- */
   var gate = $('#cr-gate'), app = $('#cr-app');
 
-  function entrar() {
+  function entrar(usuario) {
+    yo = usuario || yo;
     gate.hidden = true;
     app.hidden = false;
+    if (yo) {
+      $('#cr-yo').innerHTML = '<b>' + esc(yo.nombre || yo.email) + '</b>' +
+        '<span>' + (yo.rol === 'admin' ? 'Administrador' : 'Agente') + '</span>';
+      $('#cr-equipo').hidden = yo.rol !== 'admin';
+    }
     cargar();
+    if (yo && yo.rol === 'admin') cargarEquipo();
   }
 
   $('#cr-login').addEventListener('submit', function (ev) {
@@ -58,14 +67,15 @@
     fetch('/api/sesion', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ clave: $('#cr-pass').value })
+      body: JSON.stringify({ email: $('#cr-email').value.trim(), clave: $('#cr-pass').value })
     })
       .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
       .then(function (res) {
-        if (res.ok) return entrar();
-        msg.textContent = res.j.error === 'no_configurado'
-          ? 'El panel no está configurado. Faltan ADMIN_PASSWORD y ADMIN_SECRET en Vercel.'
-          : 'Contraseña incorrecta.';
+        if (res.ok) return entrar(res.j.usuario);
+        msg.textContent =
+          res.j.error === 'no_configurado' ? 'El panel no está configurado: falta ADMIN_SECRET en Vercel.'
+          : res.j.error === 'sin_almacen'  ? 'Falta conectar el almacén de contactos en Vercel.'
+          : 'Correo o contraseña incorrectos.';
       })
       .catch(function () { msg.textContent = 'No se pudo conectar.'; })
       .then(function () { btn.disabled = false; btn.textContent = 'Entrar'; });
@@ -82,7 +92,7 @@
         if (r.status === 401) { app.hidden = true; gate.hidden = false; throw new Error('401'); }
         return r.json();
       })
-      .then(function (d) { leads = d.leads || []; pintar(); })
+      .then(function (d) { leads = d.leads || []; if (d.yo) yo = Object.assign({}, yo, d.yo); pintar(); })
       .catch(function () {});
   }
 
@@ -128,7 +138,8 @@
         '<span class="cr-tag ' + nivel + '">' + (nivel === 'SIN' ? 'sin calificar' : nivel) + '</span></div>' +
       '<p>' + esc(linea) + (extra ? '<br>' + esc(extra) : '') + '</p>' +
       (cita ? '<p class="cr-when">' + esc(cita) + '</p>' : '') +
-      '<p class="cr-when">' + esc(hace(l.creado)) + '</p>' +
+      '<p class="cr-when">' + esc(hace(l.creado)) +
+        (l.responsableNombre ? ' · ' + esc(l.responsableNombre) : '') + '</p>' +
     '</button>';
   }
 
@@ -140,6 +151,115 @@
       filtroNivel = b.dataset.nivel;
       pintar();
     });
+  });
+
+  /* ---------- equipo ---------- */
+  var team = $('#cr-team');
+
+  function cargarEquipo() {
+    return fetch('/api/usuarios')
+      .then(function (r) { return r.ok ? r.json() : { usuarios: [] }; })
+      .then(function (d) { equipo = d.usuarios || []; pintarEquipo(); });
+  }
+
+  function pintarEquipo() {
+    var cont = $('#cr-team-list');
+    if (!cont) return;
+    cont.innerHTML = equipo.map(function (u) {
+      var yoMismo = yo && u.email === yo.email;
+      return '<div class="cr-user' + (u.activo ? '' : ' inactivo') + '">' +
+        '<span class="cr-u-datos"><b>' + esc(u.nombre || u.email) + '</b>' +
+          '<small>' + esc(u.email) + '</small></span>' +
+        '<select data-email="' + esc(u.email) + '" class="cr-rol"' + (yoMismo ? ' disabled' : '') + '>' +
+          '<option value="agente"' + (u.rol === 'agente' ? ' selected' : '') + '>Agente</option>' +
+          '<option value="admin"' + (u.rol === 'admin' ? ' selected' : '') + '>Administrador</option>' +
+        '</select>' +
+        (yoMismo ? '' :
+          '<button class="cr-toggle" data-email="' + esc(u.email) + '" data-activo="' + u.activo + '">' +
+            (u.activo ? 'Desactivar' : 'Reactivar') + '</button>') +
+      '</div>';
+    }).join('') || '<p class="cr-p-when">Todavía no hay nadie más.</p>';
+
+    $$('.cr-rol', cont).forEach(function (sel) {
+      sel.addEventListener('change', function () {
+        guardarUsuario({ email: sel.dataset.email, rol: sel.value });
+      });
+    });
+    $$('.cr-toggle', cont).forEach(function (b) {
+      b.addEventListener('click', function () {
+        guardarUsuario({ email: b.dataset.email, activo: b.dataset.activo !== 'true' });
+      });
+    });
+  }
+
+  function guardarUsuario(cambios) {
+    return fetch('/api/usuarios', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(cambios)
+    })
+      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+      .then(function (res) {
+        if (!res.ok && res.j.error === 'ultimo_admin') {
+          alert('No puedes dejar el sistema sin ningún administrador activo.');
+        }
+        return cargarEquipo();
+      });
+  }
+
+  $('#cr-equipo').addEventListener('click', function () {
+    team.hidden = false; document.body.style.overflow = 'hidden'; cargarEquipo();
+  });
+  $('#cr-team-close').addEventListener('click', function () {
+    team.hidden = true; document.body.style.overflow = '';
+  });
+
+  $('#cr-team-new').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var msg = $('#nu-msg');
+    msg.textContent = '';
+    fetch('/api/usuarios', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        nombre: $('#nu-nombre').value.trim(),
+        email: $('#nu-email').value.trim(),
+        rol: $('#nu-rol').value,
+        clave: $('#nu-clave').value
+      })
+    })
+      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+      .then(function (res) {
+        if (!res.ok) {
+          msg.textContent =
+            res.j.error === 'ya_existe'   ? 'Ese correo ya tiene cuenta.'
+            : res.j.error === 'clave_corta' ? 'La contraseña necesita al menos 10 caracteres.'
+            : res.j.error === 'email_invalido' ? 'Ese correo no es válido.'
+            : 'No se pudo crear la cuenta.';
+          return;
+        }
+        msg.textContent = 'Cuenta creada. Pásale la contraseña por un canal seguro.';
+        $('#cr-team-new').reset();
+        cargarEquipo();
+      });
+  });
+
+  $('#cr-mi-clave').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var msg = $('#mc-msg');
+    msg.textContent = '';
+    fetch('/api/sesion', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ claveActual: $('#mc-actual').value, clave: $('#mc-nueva').value })
+    })
+      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+      .then(function (res) {
+        msg.textContent = res.ok ? 'Contraseña cambiada.'
+          : res.j.error === 'clave_corta' ? 'Necesita al menos 10 caracteres.'
+          : 'La contraseña actual no es correcta.';
+        if (res.ok) $('#cr-mi-clave').reset();
+      });
   });
 
   /* ---------- ficha ---------- */
@@ -185,6 +305,20 @@
 
       (l.interes ? '<p class="cr-p-sec">Interés declarado</p>' + fila('En la web', l.interes) : '') +
 
+      (yo && yo.rol === 'admin'
+        ? '<p class="cr-p-sec">Responsable</p>' +
+          '<select class="cr-p-stage" id="cr-resp">' +
+            '<option value="">Sin asignar</option>' +
+            equipo.filter(function (u) { return u.activo; }).map(function (u) {
+              return '<option value="' + esc(u.email) + '"' +
+                (l.responsable === u.email ? ' selected' : '') + '>' +
+                esc(u.nombre || u.email) + '</option>';
+            }).join('') +
+          '</select>'
+        : (l.responsableNombre
+            ? '<p class="cr-p-sec">Responsable</p>' + fila('Asignado a', l.responsableNombre)
+            : '')) +
+
       '<p class="cr-p-sec">Etapa</p>' +
       '<select class="cr-p-stage" id="cr-stage">' +
         ETAPAS.map(function (e) {
@@ -192,12 +326,31 @@
         }).join('') +
       '</select>' +
 
+      '<p class="cr-p-sec">Archivos</p>' +
+      '<div class="cr-files" id="cr-files">' +
+        ((l.archivos || []).length
+          ? l.archivos.map(function (a, i) {
+              return '<div class="cr-file">' +
+                '<a href="/api/archivos?lead=' + encodeURIComponent(l.id) + '&i=' + i + '">' +
+                  esc(a.nombre) + '</a>' +
+                '<small>' + Math.round((a.tamano || 0) / 1024) + ' KB · ' + esc(hace(a.fecha)) + '</small>' +
+                '<button class="cr-file-x" data-i="' + i + '" aria-label="Borrar">✕</button>' +
+              '</div>';
+            }).join('')
+          : '<p class="cr-p-when">Sin archivos todavía.</p>') +
+      '</div>' +
+      '<label class="cr-file-add" for="cr-file-in">Subir archivo<input id="cr-file-in" type="file" ' +
+        'accept=".pdf,.jpg,.jpeg,.png,.webp,.heic,.txt,.csv,.docx,.xlsx"></label>' +
+      '<p class="cr-p-msg" id="cr-file-msg">Máximo 3 MB. Solo el equipo puede abrirlos.</p>' +
+
       '<p class="cr-p-sec">Notas</p>' +
       '<div class="cr-notes">' +
         ((l.notas || []).length
           ? l.notas.slice().reverse().map(function (n) {
               return '<div class="cr-note">' + esc(n.texto) +
-                '<time>' + esc(hace(n.fecha)) + '</time></div>';
+                '<time>' + esc(hace(n.fecha)) +
+                (n.autor ? ' <span class="cr-nota-autor">· ' + esc(n.autor) + '</span>' : '') +
+                '</time></div>';
             }).join('')
           : '<p class="cr-p-when">Sin notas todavía.</p>') +
       '</div>' +
@@ -209,13 +362,67 @@
     panel.hidden = false;
     veil.hidden = false;
     $('#cr-save').addEventListener('click', guardar);
+    $('#cr-file-in').addEventListener('change', subirArchivo);
+    $$('.cr-file-x').forEach(function (b) {
+      b.addEventListener('click', function () { borrarArchivo(Number(b.dataset.i)); });
+    });
     $('#cr-diag').addEventListener('click', function () { abrirPerfil(l); });
+  }
+
+  /* ---------- archivos del cliente ---------- */
+  function refrescar(lead) {
+    leads = leads.map(function (x) { return x.id === lead.id ? lead : x; });
+    pintar();
+    abrir(lead.id);
+  }
+
+  function subirArchivo(ev) {
+    var f = ev.target.files && ev.target.files[0];
+    if (!f || !abierto) return;
+    var msg = $('#cr-file-msg');
+    if (f.size > 3 * 1024 * 1024) { msg.textContent = 'Ese archivo pasa de 3 MB.'; return; }
+    msg.textContent = 'Subiendo…';
+
+    var lector = new FileReader();
+    lector.onload = function () {
+      var datos = String(lector.result).split(',')[1];
+      fetch('/api/archivos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: abierto.id, nombre: f.name, tipo: f.type, datos: datos })
+      })
+        .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+        .then(function (res) {
+          if (!res.ok) throw new Error(res.j.error || '');
+          refrescar(res.j.lead);
+        })
+        .catch(function (e) {
+          $('#cr-file-msg').textContent =
+            /tipo_no_admitido/.test(e.message) ? 'Ese tipo de archivo no se admite.'
+            : /sin_blob/.test(e.message) ? 'Falta conectar el almacén de archivos en Vercel.'
+            : 'No se pudo subir.';
+        });
+    };
+    lector.readAsDataURL(f);
+  }
+
+  function borrarArchivo(i) {
+    if (!abierto || !confirm('¿Borrar este archivo? No se puede deshacer.')) return;
+    fetch('/api/archivos', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: abierto.id, i: i })
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (j) { if (j.lead) refrescar(j.lead); });
   }
 
   function guardar() {
     if (!abierto) return;
     var btn = $('#cr-save'), msg = $('#cr-save-msg');
     var cambios = { id: abierto.id, etapa: $('#cr-stage').value };
+    var resp = $('#cr-resp');
+    if (resp) cambios.responsable = resp.value;
     var nota = $('#cr-note').value.trim();
     if (nota) cambios.nota = nota;
 
@@ -420,6 +627,7 @@
 
   /* ---------- arranque: ¿ya hay sesión? ---------- */
   fetch('/api/sesion')
-    .then(function (r) { if (r.ok) entrar(); })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (d) { if (d && d.ok) entrar(d.usuario); })
     .catch(function () {});
 })();

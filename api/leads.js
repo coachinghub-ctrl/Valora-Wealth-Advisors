@@ -1,17 +1,25 @@
-/* GET /api/leads          → listado
-   PATCH /api/leads        → { id, etapa?, nota?, responsable? } */
-const { autorizado } = require('./_auth');
+/* GET   /api/leads   listado — el agente solo ve lo suyo
+   PATCH /api/leads   { id, etapa?, nota?, responsable?, perfil? }     */
+const { sesion, esAdmin } = require('./_auth');
 const store = require('./_store');
 
 const ETAPAS = ['nuevo', 'contactado', 'agendado', 'propuesta', 'ganado', 'perdido'];
 
+function puedeVer(lead, s) {
+  if (esAdmin(s)) return true;
+  return lead.responsable === s.email;
+}
+
 module.exports = async (req, res) => {
-  if (!autorizado(req)) return res.status(401).json({ error: 'no_autorizado' });
+  const s = sesion(req);
+  if (!s) return res.status(401).json({ error: 'no_autorizado' });
   if (!store.configurado()) return res.status(500).json({ error: 'sin_almacen' });
 
   try {
     if (req.method === 'GET') {
-      return res.status(200).json({ leads: await store.listar() });
+      const todos = await store.listar();
+      const leads = esAdmin(s) ? todos : todos.filter((l) => l.responsable === s.email);
+      return res.status(200).json({ leads, yo: { email: s.email, rol: s.rol } });
     }
 
     if (req.method === 'PATCH') {
@@ -20,12 +28,38 @@ module.exports = async (req, res) => {
       d = d || {};
       if (!d.id) return res.status(400).json({ error: 'falta_id' });
 
+      const actual = await store.obtener(d.id);
+      if (!actual) return res.status(404).json({ error: 'no_existe' });
+      if (!puedeVer(actual, s)) return res.status(403).json({ error: 'no_es_tuyo' });
+
       const cambios = {};
+
       if (d.etapa) {
         if (!ETAPAS.includes(d.etapa)) return res.status(400).json({ error: 'etapa_invalida' });
         cambios.etapa = d.etapa;
       }
-      if (typeof d.responsable === 'string') cambios.responsable = d.responsable.slice(0, 80);
+
+      // repartir contactos es cosa de administradores
+      if (typeof d.responsable === 'string') {
+        if (!esAdmin(s)) return res.status(403).json({ error: 'solo_admin' });
+        if (d.responsable) {
+          const u = await store.obtenerUsuario(d.responsable);
+          if (!u || u.activo === false) return res.status(400).json({ error: 'responsable_invalido' });
+          cambios.responsable = u.email;
+          cambios.responsableNombre = u.nombre || u.email;
+        } else {
+          cambios.responsable = '';
+          cambios.responsableNombre = '';
+        }
+      }
+
+      if (d.nota) {
+        cambios.notas = (actual.notas || []).concat([{
+          texto: String(d.nota).slice(0, 1000),
+          autor: s.email,
+          fecha: new Date().toISOString()
+        }]);
+      }
 
       if (d.perfil && typeof d.perfil === 'object') {
         // solo números, y acotado: nada de guardar lo que llegue tal cual
@@ -40,17 +74,12 @@ module.exports = async (req, res) => {
           }
         }
         limpio.actualizado = new Date().toISOString();
+        limpio.por = s.email;
         cambios.perfil = limpio;
       }
 
-      if (d.nota) {
-        const actual = await store.obtener(d.id);
-        if (!actual) return res.status(404).json({ error: 'no_existe' });
-        cambios.notas = (actual.notas || []).concat([{
-          texto: String(d.nota).slice(0, 1000),
-          fecha: new Date().toISOString()
-        }]);
-      }
+      // rastro de quién tocó la ficha por última vez
+      cambios.tocadoPor = s.email;
 
       const lead = await store.actualizar(d.id, cambios);
       if (!lead) return res.status(404).json({ error: 'no_existe' });

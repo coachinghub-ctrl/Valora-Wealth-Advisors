@@ -231,3 +231,59 @@
 @media (max-width:660px){
   .cr-sheet-cols{grid-template-columns:1fr}
 }
+
+/* ── identidad y equipo ── */
+.cr-yo{
+  display:flex;flex-direction:column;line-height:1.25;font-size:11.5px;
+  color:rgba(226,235,250,.75);text-align:right;
+}
+.cr-yo b{font-weight:600;color:#fff}
+.cr-yo span{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.cr-team-body{
+  display:grid;grid-template-columns:1.4fr 1fr;gap:clamp(18px,2.4vw,28px);
+  padding:clamp(20px,3vw,34px);align-items:start;
+}
+.cr-team-body .cr-bloque:first-child{grid-row:span 2}
+.cr-team-body .ag-field{margin-top:16px}
+.cr-team-body .btn{width:100%;justify-content:center;margin-top:20px}
+.cr-user{
+  display:flex;align-items:center;gap:12px;padding:13px 0;
+  border-top:1px solid rgba(255,255,255,.09);flex-wrap:wrap;
+}
+.cr-user:first-child{border-top:0}
+.cr-user .cr-u-datos{flex:1;min-width:150px}
+.cr-user b{display:block;font-size:13.5px;color:#fff}
+.cr-user small{font-size:11.5px;color:rgba(226,235,250,.5)}
+.cr-user select{
+  padding:7px 10px;font-family:var(--sans);font-size:11.5px;color:#fff;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);border-radius:4px;
+}
+.cr-user .cr-toggle{
+  background:none;border:1px solid rgba(255,255,255,.16);border-radius:4px;
+  padding:7px 11px;font-size:11px;color:rgba(226,235,250,.7);transition:border-color .2s,color .2s;
+}
+.cr-user .cr-toggle:hover{border-color:var(--gold);color:var(--gold-light)}
+.cr-user.inactivo b,.cr-user.inactivo small{opacity:.45}
+.cr-nota-autor{color:rgba(226,235,250,.5)}
+@media (max-width:900px){ .cr-team-body{grid-template-columns:1fr} .cr-team-body .cr-bloque:first-child{grid-row:auto} }
+
+/* ── archivos de la ficha ── */
+.cr-files{display:grid;gap:8px;margin-bottom:12px}
+.cr-file{
+  display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--r);
+  background:rgba(255,255,255,.05);font-size:12.5px;
+}
+.cr-file a{flex:1;color:var(--gold-light);text-decoration:none;word-break:break-word}
+.cr-file a:hover{text-decoration:underline}
+.cr-file small{color:rgba(226,235,250,.45);font-size:10.5px;white-space:nowrap}
+.cr-file-x{
+  background:none;border:0;color:rgba(226,235,250,.45);font-size:12px;padding:4px;transition:color .2s;
+}
+.cr-file-x:hover{color:#E9A392}
+.cr-file-add{
+  display:block;text-align:center;padding:11px;border-radius:var(--r);cursor:pointer;
+  border:1px dashed rgba(201,168,76,.45);color:var(--gold-light);font-size:12px;
+  font-weight:600;letter-spacing:.06em;transition:background .2s;
+}
+.cr-file-add:hover{background:rgba(201,168,76,.1)}
+.cr-file-add input{display:none}

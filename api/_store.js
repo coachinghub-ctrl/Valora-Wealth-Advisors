@@ -11,6 +11,8 @@ const TOKEN = process.env.KV_REST_API_TOKEN;
 const CLAVE_INDICE = 'valora:leads';
 const clave = (id) => `valora:lead:${id}`;
 const claveEmail = (e) => `valora:email:${String(e).toLowerCase().trim()}`;
+const claveUsuario = (e) => `valora:user:${String(e).toLowerCase().trim()}`;
+const IDX_USUARIOS = 'valora:users';
 
 function configurado() {
   return Boolean(URL_BASE && TOKEN);
@@ -93,4 +95,32 @@ async function guardarOFusionar(lead) {
   return registro;
 }
 
-module.exports = { configurado, guardar, guardarOFusionar, listar, obtener, actualizar, nuevoId };
+/* ---------- usuarios del panel ---------- */
+async function guardarUsuario(u) {
+  const email = String(u.email).toLowerCase().trim();
+  const registro = { ...u, email, actualizado: new Date().toISOString() };
+  await pipeline([
+    ['SET', claveUsuario(email), JSON.stringify(registro)],
+    ['SADD', IDX_USUARIOS, email]
+  ]);
+  return registro;
+}
+
+async function obtenerUsuario(email) {
+  if (!email) return null;
+  const [v] = await pipeline([['GET', claveUsuario(email)]]);
+  try { return v ? JSON.parse(v) : null; } catch { return null; }
+}
+
+async function listarUsuarios() {
+  const [emails] = await pipeline([['SMEMBERS', IDX_USUARIOS]]);
+  if (!Array.isArray(emails) || !emails.length) return [];
+  const [valores] = await pipeline([['MGET', ...emails.map(claveUsuario)]]);
+  return (valores || [])
+    .map((v) => { try { return JSON.parse(v); } catch { return null; } })
+    .filter(Boolean)
+    .sort((a, b) => String(a.nombre || a.email).localeCompare(String(b.nombre || b.email)));
+}
+
+module.exports = { configurado, guardar, guardarOFusionar, listar, obtener, actualizar, nuevoId,
+                   guardarUsuario, obtenerUsuario, listarUsuarios };
