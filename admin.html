@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VALORA Operating System</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#050F26">
+<link rel="icon" href="/assets/favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/admin.css">
+</head>
+<body class="cr-body">
+
+<!-- ══════ puerta ══════ -->
+<div class="cr-gate" id="cr-gate">
+  <form class="cr-gate-card" id="cr-login">
+    <img src="/assets/mark.png" alt="" width="46">
+    <h1>VALORA<br><span>Operating System</span></h1>
+    <p>Panel interno del equipo.</p>
+    <label for="cr-pass">Contraseña</label>
+    <input id="cr-pass" type="password" autocomplete="current-password" required>
+    <button class="btn btn-gold" type="submit" id="cr-enter">Entrar</button>
+    <p class="cr-gate-msg" id="cr-gate-msg" role="status" aria-live="polite"></p>
+  </form>
+</div>
+
+<!-- ══════ panel ══════ -->
+<div class="cr-app" id="cr-app" hidden>
+
+  <header class="cr-top">
+    <div class="cr-brand">
+      <img src="/assets/mark.png" alt="" width="26">
+      <b>VALORA OS</b><span id="cr-count">—</span>
+    </div>
+    <div class="cr-tools">
+      <input type="search" id="cr-search" placeholder="Buscar nombre, email o teléfono…" aria-label="Buscar">
+      <div class="cr-filters" role="group" aria-label="Filtrar por prioridad">
+        <button class="cr-f is-on" data-nivel="">Todos</button>
+        <button class="cr-f" data-nivel="PRIORITARIO">Prioritario</button>
+        <button class="cr-f" data-nivel="SEGUIMIENTO">Seguimiento</button>
+        <button class="cr-f" data-nivel="NUTRIR">Nutrir</button>
+      </div>
+      <button class="cr-refresh" id="cr-refresh" title="Actualizar">↻</button>
+      <button class="cr-out" id="cr-out">Salir</button>
+    </div>
+  </header>
+
+  <main class="cr-board" id="cr-board"></main>
+  <p class="cr-empty" id="cr-empty" hidden>Todavía no hay contactos. Llegarán aquí en cuanto alguien envíe el formulario.</p>
+</div>
+
+<!-- ══════ ficha ══════ -->
+<aside class="cr-panel" id="cr-panel" hidden aria-label="Ficha del contacto">
+  <button class="cr-close" id="cr-close" aria-label="Cerrar ficha">✕</button>
+  <div id="cr-panel-body"></div>
+</aside>
+<div class="cr-veil" id="cr-veil" hidden></div>
+
+<script src="/admin.js" defer></script>
+</body>
+</html>

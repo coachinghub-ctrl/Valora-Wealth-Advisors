@@ -9,6 +9,8 @@
      LEAD_FROM       remitente verificado, p.ej. VALORA <web@valorawealthadvisors.com>
    ========================================================= */
 
+const store = require('./_store');
+
 const esc = (s) =>
   String(s == null ? '' : s)
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -112,11 +114,32 @@ module.exports = async (req, res) => {
       </div>
     </div>`;
 
+  // 1) al CRM. Si el almacén falla, el correo sale igual: no perdemos el lead.
+  let guardado = null;
+  if (store.configurado()) {
+    try {
+      guardado = await store.guardarOFusionar({
+        nombre, email, telefono,
+        origen: esCita ? 'agenda' : 'formulario',
+        interes: d.interes || null,
+        residencia: (r && r.residencia) || d.residencia || null,
+        respuestas: r || null,
+        score,
+        pagina: d.pagina || null
+      });
+    } catch (e) {
+      console.error('lead: no se pudo guardar en el CRM', e);
+    }
+  }
+
+  // 2) al correo del equipo
   const key = process.env.RESEND_API_KEY;
   const to = process.env.LEAD_TO;
   const from = process.env.LEAD_FROM;
   if (!key || !to || !from) {
     console.error('lead: faltan RESEND_API_KEY / LEAD_TO / LEAD_FROM');
+    // si al menos quedó en el CRM, para quien envía el formulario es un éxito
+    if (guardado) return res.status(200).json({ ok: true, id: guardado.id, aviso: 'sin_correo' });
     return res.status(500).json({ error: 'no_configurado' });
   }
 
@@ -140,7 +163,7 @@ module.exports = async (req, res) => {
       console.error('resend', resp.status, await resp.text());
       return res.status(502).json({ error: 'envio_fallido' });
     }
-    return res.status(200).json({ ok: true, nivel: score ? score.nivel : null });
+    return res.status(200).json({ ok: true, nivel: score ? score.nivel : null, id: guardado ? guardado.id : null });
   } catch (e) {
     console.error('lead', e);
     return res.status(500).json({ error: 'error_interno' });

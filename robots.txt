@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /agenda
 
 Sitemap: https://valorawealthadvisors.com/sitemap.xml

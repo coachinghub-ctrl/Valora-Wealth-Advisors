@@ -170,10 +170,11 @@ section[id]{scroll-margin-top:96px}
   mask-image:linear-gradient(to bottom,#000 90%,transparent 100%);
 }
 .founders-img img{
-  width:56%;filter:drop-shadow(0 26px 50px rgba(0,0,0,.55));
+  width:58%;filter:drop-shadow(0 26px 50px rgba(0,0,0,.55));
 }
-.founders-img img:first-child{margin-right:-13%;z-index:2}
-.founders-img img:last-child{z-index:1}
+/* Servio detrás; Mary Lou delante y algo más pequeña */
+.founders-img img:first-child{margin-right:-15%;z-index:1}
+.founders-img img:last-child{width:53%;z-index:3;filter:drop-shadow(-14px 22px 44px rgba(0,0,0,.6))}
 
 .founders-card{
   position:relative;z-index:3;margin-top:clamp(-84px,-5.5vw,-56px);
@@ -738,8 +739,9 @@ section[id]{scroll-margin-top:96px}
 .conoce-txt p{font-size:14.5px;line-height:1.8;color:rgba(226,235,250,.72);max-width:52ch}
 .conoce-txt p+p{margin-top:14px}
 .conoce-img{display:flex;align-items:flex-end;justify-content:center;align-self:end}
-.conoce-img img{width:52%;filter:drop-shadow(0 18px 40px rgba(0,0,0,.5))}
-.conoce-img img:first-child{margin-right:-11%;z-index:2}
+.conoce-img img{width:54%;filter:drop-shadow(0 18px 40px rgba(0,0,0,.5))}
+.conoce-img img:first-child{margin-right:-13%;z-index:1}
+.conoce-img img:last-child{width:49%;z-index:3;filter:drop-shadow(-12px 18px 38px rgba(0,0,0,.55))}
 
 /* =========================================================
    TESTIMONIOS
@@ -884,16 +886,21 @@ section[id]{scroll-margin-top:96px}
 .pr-steps{display:flex;align-items:flex-start;gap:clamp(6px,1vw,14px);margin-top:30px}
 .pr-steps li{flex:1;min-width:0}
 .pr-steps li.pr-arrow{
-  flex:0 0 auto;color:var(--ink-3);opacity:.55;font-size:15px;
-  padding-top:clamp(20px,2.2vw,26px);
+  flex:0 0 auto;color:var(--gold-deep);opacity:.5;font-size:15px;
+  padding-top:clamp(22px,2.4vw,28px);
 }
+.pr-ico{
+  display:grid;place-items:center;width:clamp(52px,5vw,64px);aspect-ratio:1;border-radius:50%;
+  border:1px solid rgba(8,29,66,.16);background:var(--white);color:var(--gold-deep);
+  transition:border-color .3s ease,transform .3s ease,color .3s ease;
+}
+.pr-ico svg{width:clamp(23px,2.3vw,28px);height:auto}
+.pr-steps li:hover .pr-ico{border-color:var(--gold);transform:translateY(-3px)}
 .pr-num{
-  display:grid;place-items:center;width:clamp(46px,4.6vw,58px);aspect-ratio:1;border-radius:50%;
-  border:1px solid rgba(8,29,66,.18);background:var(--white);margin-bottom:16px;
-  font-family:var(--serif);font-size:clamp(16px,1.6vw,20px);font-weight:600;color:var(--navy);
-  transition:border-color .3s ease,transform .3s ease;
+  display:block;margin:12px 0 12px;font-family:var(--serif);
+  font-size:clamp(15px,1.5vw,19px);font-weight:600;color:transparent;
+  -webkit-text-stroke:.8px rgba(168,135,58,.9);
 }
-.pr-steps li:hover .pr-num{border-color:var(--gold);transform:translateY(-3px)}
 .pr-steps h3{
   font-size:10.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;
   color:var(--navy);margin-bottom:9px;line-height:1.4;font-family:var(--sans);
@@ -905,8 +912,9 @@ section[id]{scroll-margin-top:96px}
   position:absolute;right:0;bottom:0;display:flex;align-items:flex-end;
   width:min(46%,340px);opacity:.9;pointer-events:none;
 }
-.proceso-img img{width:56%;filter:drop-shadow(0 18px 40px rgba(0,0,0,.55))}
-.proceso-img img:first-child{margin-right:-12%}
+.proceso-img img{width:58%;filter:drop-shadow(0 18px 40px rgba(0,0,0,.55))}
+.proceso-img img:first-child{margin-right:-14%;z-index:1}
+.proceso-img img:last-child{width:53%;z-index:3;filter:drop-shadow(-12px 18px 38px rgba(0,0,0,.55))}
 
 /* ── 6 razones: sin tarjetas, con separadores ── */
 .ben-grid{grid-template-columns:repeat(2,1fr);gap:0}

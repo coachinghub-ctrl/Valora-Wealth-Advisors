@@ -6,15 +6,44 @@ HTML, CSS y JS sin dependencias ni paso de build: se publica tal cual en Vercel.
 ## Estructura
 
 ```
-index.html      la página completa (14 secciones + pie)
-styles.css      todo el diseño — la paleta de marca vive en :root
-script.js       menú, revelado al hacer scroll, acordeón de FAQ y formulario
-api/lead.js     función que recibe el formulario y lo envía por correo (Resend)
-assets/         logo, marca, retratos, favicon e imagen social
-vercel.json     cache de assets y cabeceras de seguridad
+index.html      la portada
+agenda.html     diagnóstico por pasos y solicitud de cita
+admin.html      VALORA Operating System — panel interno
+styles.css      diseño de la web pública (la paleta vive en :root)
+admin.css       diseño del panel
+script.js       menú, revelado al hacer scroll, acordeón y formulario
+agenda.js       el asistente de siete pasos
+admin.js        tablero, ficha de contacto y notas
+
+api/lead.js     recibe formulario y diagnóstico, califica y avisa
+api/leads.js    listado y edición de contactos (requiere sesión)
+api/sesion.js   entrada y salida del panel
+api/_store.js   almacén de leads sobre Upstash Redis por REST
+api/_auth.js    contraseña compartida y cookie firmada
+
+assets/         logo, marca, retratos, fotografías y logos de carriers
+vercel.json     cache, cabeceras de seguridad y noindex del panel
 robots.txt      indexación
 sitemap.xml     mapa del sitio
 ```
+
+## Cómo circula un lead
+
+1. Alguien envía el formulario de la portada → `POST /api/lead`.
+   El contacto queda guardado aunque abandone después.
+2. El navegador lo lleva a `/agenda` con sus datos en `sessionStorage`
+   —nunca en la URL, porque son datos personales— y responde seis
+   preguntas y elige día y hora.
+3. `POST /api/lead` otra vez, ahora con las respuestas. **El puntaje se
+   calcula en el servidor**, no en el navegador: `api/lead.js` reconstruye
+   la suma y clasifica en `PRIORITARIO`, `SEGUIMIENTO` o `NUTRIR`.
+4. El lead entra en el almacén. Si ya existía una ficha con ese correo,
+   la completa en vez de duplicarla.
+5. Sale un correo al equipo con el nivel en el asunto.
+6. Aparece en el tablero de `/admin`.
+
+Si el almacén falla, el correo sale igual. Si falla el correo pero el
+almacén responde, el lead tampoco se pierde.
 
 ## Marca
 
@@ -56,11 +85,33 @@ mensaje de respaldo con el correo de contacto.
 
 En **Settings → Environment Variables** del proyecto:
 
-| Variable | Valor |
+| Variable | Para qué |
 |---|---|
-| `RESEND_API_KEY` | la clave de Resend |
-| `LEAD_TO` | a dónde llegan los leads, p. ej. `info@valorawealthadvisors.com` (acepta varios separados por coma) |
+| `RESEND_API_KEY` | clave de Resend |
+| `LEAD_TO` | a dónde llegan los leads (acepta varios separados por coma) |
 | `LEAD_FROM` | remitente verificado en Resend, p. ej. `VALORA <web@valorawealthadvisors.com>` |
+| `KV_REST_API_URL` | almacén de contactos — la crea la integración de Upstash |
+| `KV_REST_API_TOKEN` | idem |
+| `ADMIN_PASSWORD` | contraseña de entrada al panel |
+| `ADMIN_SECRET` | cadena larga y aleatoria para firmar la cookie de sesión |
+
+**El almacén** se añade desde el panel de Vercel: *Storage → Marketplace →
+Upstash for Redis*. Al conectarlo, Vercel inyecta `KV_REST_API_URL` y
+`KV_REST_API_TOKEN` solo. No hace falta instalar ninguna librería: el
+código habla con la base por REST.
+
+**El panel** no abre sin `ADMIN_PASSWORD` y `ADMIN_SECRET`: no hay
+contraseña por defecto en el código. Para el secreto sirve cualquier
+cadena larga; una forma de generarla:
+
+```bash
+openssl rand -hex 32
+```
+
+La sesión es una cookie firmada, `HttpOnly` y `Secure`, que dura 12 horas.
+Es una puerta con contraseña compartida, adecuada para un equipo pequeño;
+si algún día entran varios agentes con permisos distintos, habrá que
+cambiarla por cuentas individuales.
 
 Sin estas tres variables el endpoint responde 500 y la página muestra el
 mensaje de respaldo. Hay que redeployar después de agregarlas.
@@ -82,6 +133,15 @@ Si el correo de leads sale desde este dominio, Resend pedirá además sus
 registros SPF/DKIM/DMARC en la misma zona DNS.
 
 ## Pendientes
+
+### Privacidad — atención antes de publicar
+El diagnóstico pregunta la **situación migratoria** y esa respuesta queda
+guardada junto al nombre, el teléfono y el correo. Es un dato sensible:
+
+- la política de privacidad tiene que decir qué se recoge, para qué y
+  cuánto tiempo se conserva — y todavía no existe
+- el acceso al panel debe limitarse a quien realmente lo necesite
+- conviene decidir un plazo de borrado para los contactos que no prosperan
 
 ### Contenido que falta
 - **Testimonios:** las tres tarjetas de «Lo que dicen nuestras familias» traen el
