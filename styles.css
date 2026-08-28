@@ -1152,3 +1152,44 @@ section[id]{scroll-margin-top:96px}
   .ag-grid{grid-template-columns:1fr}
   .ag-day{min-width:54px;padding:10px 12px}
 }
+
+/* =========================================================
+   EN QUÉ CREEMOS · propósito, visión, misión y valores
+   ========================================================= */
+.cre-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:44px}
+.cre{
+  background:rgba(255,255,255,.04);border:1px solid rgba(201,168,76,.22);
+  border-radius:var(--r);padding:28px 26px;
+  transition:border-color .3s ease,transform .3s ease;
+}
+.cre:hover{border-color:rgba(201,168,76,.5);transform:translateY(-3px)}
+.cre-tag{
+  font-family:var(--brand);font-size:11px;font-weight:600;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:14px;
+}
+.cre p:last-child{font-size:14px;line-height:1.78;color:rgba(226,235,250,.76)}
+
+.valores{
+  margin-top:clamp(46px,5vw,72px);padding-top:clamp(36px,4vw,52px);
+  border-top:1px solid rgba(201,168,76,.2);
+}
+.valores .eyebrow{margin-bottom:28px}
+.val-list{display:grid;grid-template-columns:repeat(4,1fr);gap:26px 22px}
+.val-list li{min-width:0}
+.val-ico{
+  display:grid;place-items:center;width:44px;height:44px;border-radius:50%;margin-bottom:14px;
+  border:1px solid rgba(201,168,76,.34);background:rgba(201,168,76,.07);color:var(--gold-light);
+}
+.val-ico svg{width:21px;height:21px}
+.val-list b{
+  display:block;font-family:var(--serif);font-size:19px;font-weight:600;color:#fff;margin-bottom:8px;
+}
+.val-list p{font-size:13px;line-height:1.68;color:rgba(226,235,250,.64)}
+
+@media (max-width:980px){
+  .cre-grid{grid-template-columns:1fr}
+  .val-list{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:560px){
+  .val-list{grid-template-columns:1fr;gap:22px}
+}
