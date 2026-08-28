@@ -12,6 +12,7 @@
   --blue-soft:#3E72E0;
   --gold:#C9A84C;
   --gold-light:#E6CE8C;
+  --gold-warm:#E0A94A;
   --gold-deep:#A8873A;
   --cream:#FAF8F4;
   --cream-2:#F2EEE6;
@@ -236,9 +237,14 @@ section[id]{scroll-margin-top:96px}
   background:linear-gradient(135deg,var(--navy),var(--navy-soft));color:var(--gold-light);
 }
 .card-ico svg{width:31px;height:31px}
+.card .verb{
+  font-family:var(--brand);font-size:10.5px;font-weight:600;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--gold-deep);margin-bottom:9px;
+}
 .card h3{font-family:var(--serif);font-size:26px;font-weight:700;color:var(--navy)}
 .card .sub{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-deep);margin:8px 0 18px;font-weight:600}
-.card .body{font-size:14.5px;line-height:1.75;color:var(--ink-2)}
+.card .body{font-size:14.5px;line-height:1.72;color:var(--navy);font-weight:500}
+.card .body-2{font-size:13.5px;line-height:1.72;color:var(--ink-3);margin-top:12px}
 .card ul{margin:20px 0 0;display:grid;gap:11px}
 .card li{position:relative;padding-left:22px;font-size:14px;line-height:1.66;color:var(--ink-2)}
 .card li::before{
@@ -680,25 +686,28 @@ section[id]{scroll-margin-top:96px}
 /* =========================================================
    TU VIDA · TU ESTRATEGIA
    ========================================================= */
-.vida{padding-block:clamp(44px,4.6vw,68px)}
-.vida-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 30px;margin-bottom:clamp(28px,3.2vw,40px)}
+.vida{padding-block:clamp(44px,4.6vw,70px)}
+.vida-grid{display:grid;grid-template-columns:.76fr 1.24fr;gap:clamp(28px,4vw,60px);align-items:center}
+.vida-head .eyebrow{margin-bottom:16px;color:var(--gold-warm)}
+.vida-head .h3{color:#fff;line-height:1.18}
+.vida-head .lead{margin-top:16px;font-size:14px;line-height:1.7}
 .vida-head .eyebrow{margin:0;flex:0 0 100%}
 .vida-head .h3{color:#fff}
 .vida-head .lead{font-size:14.5px}
 .timeline{display:flex;justify-content:space-between;position:relative;gap:8px}
 .timeline::before{
-  content:"";position:absolute;left:6%;right:6%;top:calc(clamp(46px,4.4vw,58px) + 12px);height:1px;
-  background:linear-gradient(90deg,transparent,rgba(201,168,76,.5) 12%,rgba(201,168,76,.5) 88%,transparent);
+  content:"";position:absolute;left:8%;right:8%;top:calc(clamp(52px,5vw,66px) + 12px);height:1px;
+  background:linear-gradient(90deg,transparent,rgba(224,169,74,.75) 10%,rgba(224,169,74,.75) 90%,transparent);
 }
 .timeline li{flex:1;text-align:center;position:relative;min-width:0}
 .tl-ico{
-  display:grid;place-items:center;width:clamp(46px,4.4vw,58px);aspect-ratio:1;margin:0 auto;
-  color:var(--gold-light);
+  display:grid;place-items:center;width:clamp(52px,5vw,66px);aspect-ratio:1;margin:0 auto;
+  color:var(--gold-warm);
 }
-.tl-ico svg{width:clamp(22px,2.2vw,28px);height:auto}
+.tl-ico svg{width:clamp(30px,3vw,40px);height:auto;stroke-width:1.35}
 .tl-dot{
-  display:block;width:9px;height:9px;border-radius:50%;margin:8px auto 0;
-  background:var(--gold);box-shadow:0 0 0 4px rgba(201,168,76,.18);position:relative;z-index:2;
+  display:block;width:10px;height:10px;border-radius:50%;margin:8px auto 0;
+  background:var(--gold-warm);box-shadow:0 0 0 4px rgba(224,169,74,.22);position:relative;z-index:2;
 }
 .timeline b{
   display:block;margin-top:16px;font-size:10.5px;font-weight:600;letter-spacing:.14em;
@@ -781,6 +790,9 @@ section[id]{scroll-margin-top:96px}
   .conoce-img{max-width:420px;margin-inline:auto}
   .testis{grid-template-columns:1fr}
 }
+@media (max-width:900px){
+  .vida-grid{grid-template-columns:1fr;gap:30px}
+}
 @media (max-width:760px){
   .bp-flow{flex-wrap:wrap;gap:30px 0}
   .bp-step{flex:0 0 50%}
@@ -834,7 +846,8 @@ section[id]{scroll-margin-top:96px}
 .sys-layout .card{padding:28px 24px}
 .sys-layout .card h3{font-size:22px}
 .sys-layout .card li{font-size:13.5px}
-.sys-layout .card .body{font-size:13.5px}
+.sys-layout .card .body{font-size:14px}
+.sys-layout .card .body-2{font-size:13px}
 .sys-layout .card .close{font-size:16px}
 
 /* ── Socios: etiqueta, fila única de logos, coletilla ── */
@@ -995,3 +1008,5 @@ section[id]{scroll-margin-top:96px}
 @media (max-width:620px){
   .carriers .carrier-list li{flex:0 0 50%}
 }
+
+.sys-cta{margin-top:28px}
