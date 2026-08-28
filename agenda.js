@@ -12,8 +12,16 @@
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
 
   var pasos   = $$('.ag-step');
-  var total   = pasos.length;
+  var total   = 8;
   var actual  = 1;
+  var ruta    = 'personal';   // la elige la primera pregunta
+
+  // hay pantallas que solo existen para una de las dos rutas
+  function aplica(el) {
+    if (el.classList.contains('solo-personal')) return ruta === 'personal';
+    if (el.classList.contains('solo-empresa'))  return ruta === 'empresa' || ruta === 'ambos';
+    return true;
+  }
   var datos   = {};
   var puntos  = {};
 
@@ -23,8 +31,9 @@
 
   function pintar() {
     pasos.forEach(function (p) {
-      p.classList.toggle('is-on', Number(p.dataset.step) === actual);
+      p.classList.toggle('is-on', Number(p.dataset.step) === actual && aplica(p));
     });
+    $$('.ag-opt').forEach(function (o) { o.hidden = !aplica(o); });
     barra.style.width = (actual / total * 100) + '%';
     num.textContent = actual;
     prog.setAttribute('aria-valuenow', String(actual));
@@ -49,6 +58,7 @@
       b.classList.add('is-sel');
       datos[clave]  = b.dataset.value;
       puntos[clave] = Number(b.dataset.score || 0);
+      if (b.dataset.ruta) ruta = b.dataset.ruta;
       setTimeout(function () { ir(actual + 1); }, 220);
     });
   });
@@ -126,6 +136,12 @@
   /* ---------- recomendación ---------- */
   function recomendar() {
     var o = datos.objetivo || '', e = datos.etapa || '', p = datos.presupuesto || '';
+    if (ruta === 'empresa' || ruta === 'ambos') {
+      return ['VALORA Strategy',
+        'Tu patrimonio personal y el de tu empresa no pueden diseñarse por separado. ' +
+        'Trabajaremos la continuidad del negocio, los acuerdos entre socios y tu propia ' +
+        'salida dentro de una sola estructura.'];
+    }
     if (/Más de \$500/.test(p) || /colegio o universidad/.test(e) || /no lo tengo claro/.test(o)) {
       return ['VALORA Strategy',
         'Tu situación pide una estructura completa: protección y acumulación diseñadas juntas, ' +

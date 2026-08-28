@@ -31,15 +31,29 @@
 <main class="ag-main">
   <div class="ag-shell">
 
-    <div class="ag-progress" id="ag-progress" role="progressbar" aria-valuemin="0" aria-valuemax="7" aria-valuenow="1">
+    <div class="ag-progress" id="ag-progress" role="progressbar" aria-valuemin="0" aria-valuemax="8" aria-valuenow="1">
       <div class="ag-bar"><span id="ag-bar-fill"></span></div>
-      <p class="ag-step-count"><b id="ag-n">1</b> de 7</p>
+      <p class="ag-step-count"><b id="ag-n">1</b> de 8</p>
     </div>
 
     <form id="ag-form" novalidate>
 
       <!-- 1 -->
-      <section class="ag-step is-on" data-step="1" data-key="objetivo">
+      <section class="ag-step is-on" data-step="1" data-key="ruta">
+        <p class="eyebrow">Tu punto de partida</p>
+        <h1 class="ag-q">¿Sobre qué patrimonio quieres hablar?</h1>
+        <div class="ag-opts">
+          <button type="button" class="ag-opt" data-value="Personal y familiar" data-score="1" data-ruta="personal">
+            <b>Personal y familiar</b><span>Mi vida, mi familia, mi patrimonio</span></button>
+          <button type="button" class="ag-opt" data-value="Empresarial" data-score="2" data-ruta="empresa">
+            <b>Empresarial</b><span>Mi empresa, mis socios, mi continuidad</span></button>
+          <button type="button" class="ag-opt" data-value="Los dos" data-score="3" data-ruta="ambos">
+            <b>Los dos</b><span>Tengo empresa y quiero verlo todo junto</span></button>
+        </div>
+      </section>
+
+      <!-- 2 -->
+      <section class="ag-step" data-step="2" data-key="objetivo">
         <p class="eyebrow">Tu prioridad</p>
         <h1 class="ag-q">¿Qué te preocupa más hoy?</h1>
         <div class="ag-opts">
@@ -49,13 +63,15 @@
             <b>Hacer crecer mi dinero</b><span>Acumular patrimonio con lo que ya aporto</span></button>
           <button type="button" class="ag-opt" data-value="Prepararme para el retiro" data-score="2">
             <b>Prepararme para el retiro</b><span>Ingreso estable cuando deje de trabajar</span></button>
+          <button type="button" class="ag-opt solo-empresa" data-value="Proteger la continuidad de mi empresa" data-score="3">
+            <b>Proteger la continuidad de mi empresa</b><span>Socios, persona clave, sucesión</span></button>
           <button type="button" class="ag-opt" data-value="Todavía no lo tengo claro" data-score="1">
             <b>Todavía no lo tengo claro</b><span>Quiero orientación antes de decidir</span></button>
         </div>
       </section>
 
       <!-- 2 -->
-      <section class="ag-step" data-step="2" data-key="etapa">
+      <section class="ag-step solo-personal" data-step="3" data-key="etapa">
         <p class="eyebrow">Tu momento</p>
         <h1 class="ag-q">¿En qué etapa de tu vida estás?</h1>
         <div class="ag-opts">
@@ -70,8 +86,25 @@
         </div>
       </section>
 
+
+      <!-- 3b -->
+      <section class="ag-step solo-empresa" data-step="3" data-key="etapa">
+        <p class="eyebrow">Tu empresa</p>
+        <h1 class="ag-q">¿En qué momento está tu negocio?</h1>
+        <div class="ag-opts">
+          <button type="button" class="ag-opt" data-value="Arrancando · aún soy yo solo" data-score="1">
+            <b>Arrancando</b><span>Todavía depende enteramente de mí</span></button>
+          <button type="button" class="ag-opt" data-value="En crecimiento · con equipo" data-score="3">
+            <b>En crecimiento</b><span>Ya hay equipo y personas clave</span></button>
+          <button type="button" class="ag-opt" data-value="Consolidada · con socios" data-score="3">
+            <b>Consolidada, con socios</b><span>Hay más de un dueño en la mesa</span></button>
+          <button type="button" class="ag-opt" data-value="Pensando en la salida o la sucesión" data-score="3">
+            <b>Pensando en la salida</b><span>Sucesión, venta o retiro del negocio</span></button>
+        </div>
+      </section>
+
       <!-- 3 -->
-      <section class="ag-step" data-step="3" data-key="residencia">
+      <section class="ag-step" data-step="4" data-key="residencia">
         <p class="eyebrow">Dónde vives</p>
         <h1 class="ag-q">¿Dónde resides actualmente?</h1>
         <div class="ag-field">
@@ -92,7 +125,7 @@
       </section>
 
       <!-- 4 -->
-      <section class="ag-step" data-step="4" data-key="estatus">
+      <section class="ag-step" data-step="5" data-key="estatus">
         <p class="eyebrow">Elegibilidad</p>
         <h1 class="ag-q">¿Cuál es tu situación en USA?</h1>
         <p class="ag-help">Nos ayuda a saber qué compañías pueden emitirte una póliza. Muchas aceptan
@@ -108,7 +141,7 @@
       </section>
 
       <!-- 5 -->
-      <section class="ag-step" data-step="5" data-key="presupuesto">
+      <section class="ag-step" data-step="6" data-key="presupuesto">
         <p class="eyebrow">Tu capacidad</p>
         <h1 class="ag-q">¿Cuánto podrías destinar al mes?</h1>
         <p class="ag-help">No es un compromiso. Sirve para diseñarte algo realista desde el primer día.</p>
@@ -122,7 +155,7 @@
       </section>
 
       <!-- 6 -->
-      <section class="ag-step" data-step="6" data-key="urgencia">
+      <section class="ag-step" data-step="7" data-key="urgencia">
         <p class="eyebrow">Tus tiempos</p>
         <h1 class="ag-q">¿Cuándo te gustaría empezar?</h1>
         <div class="ag-opts">
@@ -133,7 +166,7 @@
       </section>
 
       <!-- 7 -->
-      <section class="ag-step" data-step="7" data-key="cita">
+      <section class="ag-step" data-step="8" data-key="cita">
         <p class="eyebrow">Tu cita</p>
         <h1 class="ag-q">Elige día y hora</h1>
         <p class="ag-help">Sesión de 30–45 minutos por videollamada o teléfono.

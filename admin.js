@@ -121,7 +121,7 @@
     var nivel = (l.score && l.score.nivel) || 'SIN';
     var r = l.respuestas || {};
     var linea = r.objetivo || l.interes || '—';
-    var extra = [r.presupuesto, r.residencia || l.residencia].filter(Boolean).join(' · ');
+    var extra = [r.ruta, r.presupuesto, r.residencia || l.residencia].filter(Boolean).join(' · ');
     var cita = r.dia ? '📅 ' + r.dia + ' · ' + (r.hora || '') : '';
     return '<button class="cr-card" data-id="' + esc(l.id) + '">' +
       '<div class="cr-card-top"><b>' + esc(l.nombre || 'Sin nombre') + '</b>' +
@@ -178,7 +178,7 @@
       fila('Reside en', r.residencia || l.residencia) +
 
       (r.objetivo || r.presupuesto ? '<p class="cr-p-sec">Diagnóstico</p>' +
-        fila('Prioridad', r.objetivo) + fila('Etapa de vida', r.etapa) +
+        fila('Patrimonio', r.ruta) + fila('Prioridad', r.objetivo) + fila('Momento', r.etapa) +
         fila('Situación en USA', r.estatus) + fila('Capacidad mensual', r.presupuesto) +
         fila('Cuándo empezar', r.urgencia) +
         fila('Cita solicitada', r.dia ? r.dia + ' · ' + (r.hora || '') : '') : '') +
@@ -266,6 +266,13 @@
       ['retiro',     '401(k) o retiro'],
       ['deudaTotal', 'Saldo total de deudas'],
       ['coberturaActual', 'Cobertura de vida actual']
+    ]],
+    ['La empresa · si la hay', 'empresa', [
+      ['valor',      'Valor estimado del negocio'],
+      ['participacion', 'Valor de su participación'],
+      ['socios',     'Nº de socios'],
+      ['deudaEmp',   'Deuda de la empresa'],
+      ['retiroEmp',  'Retiro mensual del negocio']
     ]]
   ];
 
@@ -286,8 +293,10 @@
       var datos = p[b[1]] || {};
       return '<section class="cr-bloque"><h3>' + esc(b[0]) + '</h3>' +
         b[2].map(function (c) {
+          var esDinero = c[0] !== 'socios';
           return '<div class="cr-linea"><label for="f-' + b[1] + '-' + c[0] + '">' + esc(c[1]) + '</label>' +
-            '<span class="cr-money"><input id="f-' + b[1] + '-' + c[0] + '" type="text" inputmode="decimal" ' +
+            '<span class="' + (esDinero ? 'cr-money' : 'cr-cifra') + '">' +
+            '<input id="f-' + b[1] + '-' + c[0] + '" type="text" inputmode="decimal" ' +
             'data-g="' + b[1] + '" data-c="' + c[0] + '" value="' + (datos[c[0]] || '') + '"></span></div>';
         }).join('') +
         '<div class="cr-sub"><span>Subtotal</span><b data-sub="' + b[1] + '">$0</b></div>' +
@@ -321,12 +330,18 @@
     var gasto   = suma('gastos');
     var deuda   = suma('deudas');
     var ahorro  = num((p.activos || {}).ahorro);
+    var partic  = num((p.empresa || {}).participacion);
+    var deudaEmp= num((p.empresa || {}).deudaEmp);
+    var socios  = num((p.empresa || {}).socios);
     var deudaTotal = num((p.activos || {}).deudaTotal);
     var cobActual  = num((p.activos || {}).coberturaActual);
 
     BLOQUES.forEach(function (b) {
       var el = $('[data-sub="' + b[1] + '"]');
-      if (el) el.textContent = money(b[1] === 'activos' ? ahorro + num((p.activos || {}).retiro) : suma(b[1]));
+      if (!el) return;
+      if (b[1] === 'activos') el.textContent = money(ahorro + num((p.activos || {}).retiro));
+      else if (b[1] === 'empresa') el.textContent = money(num((p.empresa || {}).valor));
+      else el.textContent = money(suma(b[1]));
     });
 
     var excedente = ingreso - gasto - deuda;
@@ -358,6 +373,11 @@
 
       '<div class="cr-kpi"><p>Cobertura a cubrir</p><b>' + money(cobertura) + '</b>' +
         '<small>Deudas + diez años de ingreso, menos la cobertura actual</small></div>' +
+
+      (partic ? '<div class="cr-kpi"><p>A cubrir en la empresa</p><b>' +
+          money(partic + deudaEmp) + '</b><small>Su participación más la deuda del negocio' +
+          (socios ? ' · ' + socios + (socios === 1 ? ' socio' : ' socios') : '') +
+          '. Es el monto que un Buy-Sell debería financiar.</small></div>' : '') +
 
       '<div class="cr-ratios">' +
         '<div class="cr-ratio"><i class="cr-luz ' + luz(tasa, .15, .05) + '"></i>' +

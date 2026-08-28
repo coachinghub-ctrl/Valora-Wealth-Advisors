@@ -242,7 +242,9 @@ section[id]{scroll-margin-top:96px}
   font-family:var(--brand);font-size:10.5px;font-weight:600;letter-spacing:.22em;
   text-transform:uppercase;color:var(--gold-deep);margin-bottom:9px;
 }
-.card h3{font-family:var(--serif);font-size:26px;font-weight:700;color:var(--navy)}
+.card h3{font-family:var(--serif);font-size:26px;font-weight:700;color:var(--navy);line-height:1.16}
+/* VALORA arriba y la palabra debajo: las tres tarjetas quedan parejas */
+.card h3 span{display:block}
 .card .sub{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-deep);margin:8px 0 18px;font-weight:600}
 .card .body{font-size:14.5px;line-height:1.72;color:var(--navy);font-weight:500}
 .card .body-2{font-size:13.5px;line-height:1.72;color:var(--ink-3);margin-top:12px}

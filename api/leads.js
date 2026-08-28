@@ -30,7 +30,7 @@ module.exports = async (req, res) => {
       if (d.perfil && typeof d.perfil === 'object') {
         // solo números, y acotado: nada de guardar lo que llegue tal cual
         const limpio = {};
-        for (const grupo of ['ingresos', 'gastos', 'deudas', 'activos']) {
+        for (const grupo of ['ingresos', 'gastos', 'deudas', 'activos', 'empresa']) {
           const g = d.perfil[grupo];
           if (!g || typeof g !== 'object') continue;
           limpio[grupo] = {};

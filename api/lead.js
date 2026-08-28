@@ -18,23 +18,27 @@ const esc = (s) =>
 
 /* El puntaje se recalcula aquí: lo que llega del navegador no se usa. */
 const TABLA = {
+  ruta:     { 'Personal y familiar': 1, 'Empresarial': 2, 'Los dos': 3 },
   objetivo: { 'Proteger a mi familia si yo falto': 2, 'Hacer crecer mi dinero': 2,
-              'Prepararme para el retiro': 2, 'Todavía no lo tengo claro': 1 },
+              'Prepararme para el retiro': 2, 'Proteger la continuidad de mi empresa': 3,
+              'Todavía no lo tengo claro': 1 },
   etapa:    { 'Empezando · sin hijos': 1, 'Con hijos pequeños': 3,
-              'Hijos en colegio o universidad': 3, 'Cerca del retiro': 2 },
+              'Hijos en colegio o universidad': 3, 'Cerca del retiro': 2,
+              'Arrancando · aún soy yo solo': 1, 'En crecimiento · con equipo': 3,
+              'Consolidada · con socios': 3, 'Pensando en la salida o la sucesión': 3 },
   estatus:  { 'Ciudadano': 3, 'Residente · green card': 3, 'Visa de trabajo': 2,
               'ITIN': 2, 'Vivo fuera de USA': 2, 'Prefiero conversarlo': 1 },
   presupuesto: { 'Menos de $100': 1, '$100 – $250': 2, '$250 – $500': 3,
                  'Más de $500': 4, 'Aún no lo sé': 1 },
   urgencia: { 'Este mes': 4, 'En los próximos 3 meses': 2, 'Solo estoy explorando': 0 }
 };
-const MAXIMO = 16;
+const MAXIMO = 20;
 
 function calificar(r) {
   if (!r || typeof r !== 'object') return null;
   let total = 0;
   for (const clave of Object.keys(TABLA)) total += TABLA[clave][r[clave]] || 0;
-  const nivel = total >= 12 ? 'PRIORITARIO' : total >= 7 ? 'SEGUIMIENTO' : 'NUTRIR';
+  const nivel = total >= 15 ? 'PRIORITARIO' : total >= 9 ? 'SEGUIMIENTO' : 'NUTRIR';
   return { total, maximo: MAXIMO, nivel };
 }
 
@@ -72,8 +76,9 @@ module.exports = async (req, res) => {
   if (esCita && r) {
     filas.push(
       ['Cita solicitada', [r.dia, r.hora].filter(Boolean).join(' · ') + ' (ET)'],
+      ['Patrimonio', r.ruta],
       ['Prioridad', r.objetivo],
-      ['Etapa de vida', r.etapa],
+      ['Momento', r.etapa],
       ['Reside en', r.residencia],
       ['Situación en USA', r.estatus],
       ['Capacidad mensual', r.presupuesto],
