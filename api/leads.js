@@ -27,6 +27,22 @@ module.exports = async (req, res) => {
       }
       if (typeof d.responsable === 'string') cambios.responsable = d.responsable.slice(0, 80);
 
+      if (d.perfil && typeof d.perfil === 'object') {
+        // solo números, y acotado: nada de guardar lo que llegue tal cual
+        const limpio = {};
+        for (const grupo of ['ingresos', 'gastos', 'deudas', 'activos']) {
+          const g = d.perfil[grupo];
+          if (!g || typeof g !== 'object') continue;
+          limpio[grupo] = {};
+          for (const k of Object.keys(g).slice(0, 20)) {
+            const n = parseFloat(String(g[k]).replace(/[^\d.-]/g, ''));
+            if (!isNaN(n)) limpio[grupo][String(k).slice(0, 30)] = n;
+          }
+        }
+        limpio.actualizado = new Date().toISOString();
+        cambios.perfil = limpio;
+      }
+
       if (d.nota) {
         const actual = await store.obtener(d.id);
         if (!actual) return res.status(404).json({ error: 'no_existe' });

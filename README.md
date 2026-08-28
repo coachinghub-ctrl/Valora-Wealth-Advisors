@@ -100,6 +100,28 @@ Upstash for Redis*. Al conectarlo, Vercel inyecta `KV_REST_API_URL` y
 `KV_REST_API_TOKEN` solo. No hace falta instalar ninguna librería: el
 código habla con la base por REST.
 
+### La sesión de diagnóstico
+Desde la ficha de cualquier contacto, «Sesión de diagnóstico» abre la hoja
+de perfil financiero que el agente llena durante la cita: ingresos del
+hogar, gastos fijos, pagos de deuda y lo que ya tiene. Los números se
+calculan en vivo mientras se escriben.
+
+De la hoja salen cuatro cifras y tres semáforos:
+
+| Sale | Cómo se calcula |
+|---|---|
+| Capacidad de ahorro | ingresos − gastos fijos − pagos de deuda |
+| Prima sugerida | la mitad del excedente, con techo del 15% del ingreso |
+| Cobertura a cubrir | saldo de deudas + diez años de ingreso del titular − cobertura actual |
+| Tasa de ahorro | verde ≥15%, ámbar ≥5% |
+| Carga de deuda | verde ≤20%, ámbar ≤36% |
+| Colchón de emergencia | verde ≥6 meses, ámbar ≥3 |
+
+Son reglas de referencia del oficio, no doctrina: si el equipo trabaja con
+otros umbrales o con otra fórmula de cobertura, se cambian en `calcular()`
+dentro de `admin.js`. **Es una hoja de trabajo interna para un agente
+licenciado, no un cálculo que se le entregue al cliente como asesoría.**
+
 **El panel** no abre sin `ADMIN_PASSWORD` y `ADMIN_SECRET`: no hay
 contraseña por defecto en el código. Para el secreto sirve cualquier
 cadena larga; una forma de generarla:

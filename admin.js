@@ -203,11 +203,13 @@
       '</div>' +
       '<textarea class="cr-note-new" id="cr-note" placeholder="Qué se habló, próximos pasos…"></textarea>' +
       '<button class="btn btn-gold cr-p-save" id="cr-save">Guardar</button>' +
-      '<p class="cr-p-msg" id="cr-save-msg"></p>';
+      '<p class="cr-p-msg" id="cr-save-msg"></p>' +
+      '<button class="cr-p-diag" id="cr-diag">Sesión de diagnóstico · perfil financiero</button>';
 
     panel.hidden = false;
     veil.hidden = false;
     $('#cr-save').addEventListener('click', guardar);
+    $('#cr-diag').addEventListener('click', function () { abrirPerfil(l); });
   }
 
   function guardar() {
@@ -234,6 +236,167 @@
       .catch(function () { msg.textContent = 'No se pudo guardar.'; })
       .then(function () { btn.disabled = false; btn.textContent = 'Guardar'; });
   }
+
+  /* =========================================================
+     Sesión de diagnóstico · perfil financiero
+     ========================================================= */
+  var BLOQUES = [
+    ['Ingresos del hogar', 'ingresos', [
+      ['titular',  'Ingreso neto mensual (titular)'],
+      ['pareja',   'Ingreso neto de la pareja'],
+      ['otros',    'Otros ingresos']
+    ]],
+    ['Gastos fijos', 'gastos', [
+      ['vivienda',  'Renta o hipoteca'],
+      ['servicios', 'Servicios y teléfono'],
+      ['comida',    'Alimentación'],
+      ['transporte','Transporte y auto'],
+      ['educacion', 'Colegios y educación'],
+      ['seguros',   'Seguros actuales'],
+      ['otros',     'Otros gastos']
+    ]],
+    ['Pagos de deuda al mes', 'deudas', [
+      ['tarjetas',   'Tarjetas de crédito'],
+      ['auto',       'Préstamo de auto'],
+      ['personal',   'Préstamo personal'],
+      ['estudiantil','Préstamo estudiantil']
+    ]],
+    ['Lo que ya tiene', 'activos', [
+      ['ahorro',     'Ahorro disponible'],
+      ['retiro',     '401(k) o retiro'],
+      ['deudaTotal', 'Saldo total de deudas'],
+      ['coberturaActual', 'Cobertura de vida actual']
+    ]]
+  ];
+
+  var hoja = $('#cr-sheet');
+  var perfilDe = null;
+
+  function num(v) { var n = parseFloat(String(v).replace(/[^\d.-]/g, '')); return isNaN(n) ? 0 : n; }
+  function money(n) {
+    return '$' + Math.round(n).toLocaleString('en-US');
+  }
+
+  function abrirPerfil(l) {
+    perfilDe = l;
+    var p = l.perfil || {};
+    $('#cr-sheet-name').textContent = l.nombre || 'Sin nombre';
+
+    $('#cr-sheet-cols').innerHTML = BLOQUES.map(function (b) {
+      var datos = p[b[1]] || {};
+      return '<section class="cr-bloque"><h3>' + esc(b[0]) + '</h3>' +
+        b[2].map(function (c) {
+          return '<div class="cr-linea"><label for="f-' + b[1] + '-' + c[0] + '">' + esc(c[1]) + '</label>' +
+            '<span class="cr-money"><input id="f-' + b[1] + '-' + c[0] + '" type="text" inputmode="decimal" ' +
+            'data-g="' + b[1] + '" data-c="' + c[0] + '" value="' + (datos[c[0]] || '') + '"></span></div>';
+        }).join('') +
+        '<div class="cr-sub"><span>Subtotal</span><b data-sub="' + b[1] + '">$0</b></div>' +
+      '</section>';
+    }).join('');
+
+    $$('#cr-sheet-cols input').forEach(function (i) {
+      i.addEventListener('input', calcular);
+    });
+    calcular();
+    hoja.hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
+
+  function leerPerfil() {
+    var p = {};
+    $$('#cr-sheet-cols input').forEach(function (i) {
+      p[i.dataset.g] = p[i.dataset.g] || {};
+      if (i.value.trim()) p[i.dataset.g][i.dataset.c] = i.value.trim();
+    });
+    return p;
+  }
+
+  function calcular() {
+    var p = leerPerfil();
+    var suma = function (g) {
+      return Object.keys(p[g] || {}).reduce(function (t, k) { return t + num(p[g][k]); }, 0);
+    };
+
+    var ingreso = suma('ingresos');
+    var gasto   = suma('gastos');
+    var deuda   = suma('deudas');
+    var ahorro  = num((p.activos || {}).ahorro);
+    var deudaTotal = num((p.activos || {}).deudaTotal);
+    var cobActual  = num((p.activos || {}).coberturaActual);
+
+    BLOQUES.forEach(function (b) {
+      var el = $('[data-sub="' + b[1] + '"]');
+      if (el) el.textContent = money(b[1] === 'activos' ? ahorro + num((p.activos || {}).retiro) : suma(b[1]));
+    });
+
+    var excedente = ingreso - gasto - deuda;
+    var tasa   = ingreso ? excedente / ingreso : 0;
+    var carga  = ingreso ? deuda / ingreso : 0;
+    var meses  = (gasto + deuda) ? ahorro / (gasto + deuda) : 0;
+
+    // prima sugerida: la mitad del excedente, con techo del 15% del ingreso
+    var prima = Math.max(0, Math.min(excedente * 0.5, ingreso * 0.15));
+    // cobertura: deudas + diez años de ingreso del titular, menos lo que ya tiene
+    var titular = num((p.ingresos || {}).titular);
+    var cobertura = Math.max(0, deudaTotal + titular * 12 * 10 - cobActual);
+
+    var luz = function (v, bien, ojo, alRevés) {
+      var ok = alRevés ? v <= bien : v >= bien;
+      var med = alRevés ? v <= ojo : v >= ojo;
+      return ok ? 'bien' : med ? 'ojo' : 'mal';
+    };
+
+    $('#cr-resumen').innerHTML =
+      '<div class="cr-kpi"><p>Ingreso del hogar</p><b>' + money(ingreso) + '</b>' +
+        '<small>Gastos ' + money(gasto) + ' · deuda ' + money(deuda) + '</small></div>' +
+
+      '<div class="cr-kpi destacado"><p>Capacidad de ahorro</p><b>' + money(excedente) + '</b>' +
+        '<small>Lo que queda libre cada mes</small></div>' +
+
+      '<div class="cr-kpi"><p>Prima sugerida</p><b>' + money(prima) + '</b>' +
+        '<small>Mitad del excedente, con techo del 15% del ingreso</small></div>' +
+
+      '<div class="cr-kpi"><p>Cobertura a cubrir</p><b>' + money(cobertura) + '</b>' +
+        '<small>Deudas + diez años de ingreso, menos la cobertura actual</small></div>' +
+
+      '<div class="cr-ratios">' +
+        '<div class="cr-ratio"><i class="cr-luz ' + luz(tasa, .15, .05) + '"></i>' +
+          '<span>Tasa de ahorro</span><b>' + Math.round(tasa * 100) + '%</b></div>' +
+        '<div class="cr-ratio"><i class="cr-luz ' + luz(carga, .20, .36, true) + '"></i>' +
+          '<span>Carga de deuda</span><b>' + Math.round(carga * 100) + '%</b></div>' +
+        '<div class="cr-ratio"><i class="cr-luz ' + luz(meses, 6, 3) + '"></i>' +
+          '<span>Colchón de emergencia</span><b>' + meses.toFixed(1) + ' meses</b></div>' +
+      '</div>';
+  }
+
+  function cerrarPerfil() {
+    hoja.hidden = true;
+    document.body.style.overflow = '';
+    perfilDe = null;
+  }
+  $('#cr-sheet-close').addEventListener('click', cerrarPerfil);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !hoja.hidden) cerrarPerfil(); });
+
+  $('#cr-sheet-save').addEventListener('click', function () {
+    if (!perfilDe) return;
+    var btn = $('#cr-sheet-save');
+    btn.disabled = true; btn.textContent = 'Guardando…';
+    fetch('/api/leads', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: perfilDe.id, perfil: leerPerfil() })
+    })
+      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+      .then(function (res) {
+        if (!res.ok) throw new Error();
+        leads = leads.map(function (x) { return x.id === res.j.lead.id ? res.j.lead : x; });
+        pintar();
+        btn.textContent = 'Guardado';
+        setTimeout(function () { btn.textContent = 'Guardar perfil'; }, 1600);
+      })
+      .catch(function () { btn.textContent = 'No se pudo guardar'; })
+      .then(function () { btn.disabled = false; });
+  });
 
   /* ---------- arranque: ¿ya hay sesión? ---------- */
   fetch('/api/sesion')
