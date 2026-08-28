@@ -240,14 +240,15 @@ section[id]{scroll-margin-top:96px}
   background:linear-gradient(135deg,var(--navy),var(--navy-soft));color:var(--gold-light);
 }
 .card-ico svg{width:31px;height:31px}
+/* la cabecera de la tarjeta va centrada, como el icono */
 .card .verb{
   font-family:var(--brand);font-size:10.5px;font-weight:600;letter-spacing:.22em;
-  text-transform:uppercase;color:var(--gold-deep);margin-bottom:9px;
+  text-transform:uppercase;color:var(--gold-deep);margin-bottom:9px;text-align:center;
 }
-.card h3{font-family:var(--serif);font-size:26px;font-weight:700;color:var(--navy);line-height:1.16}
+.card h3{font-family:var(--serif);font-size:26px;font-weight:700;color:var(--navy);line-height:1.16;text-align:center}
 /* VALORA arriba y la palabra debajo: las tres tarjetas quedan parejas */
 .card h3 span{display:block}
-.card .sub{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-deep);margin:8px 0 18px;font-weight:600}
+.card .sub{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-deep);margin:8px 0 20px;font-weight:600;text-align:center}
 .card .body{font-size:14.5px;line-height:1.72;color:var(--navy);font-weight:500}
 .card .body-2{font-size:13.5px;line-height:1.72;color:var(--ink-3);margin-top:12px}
 .card ul{margin:20px 0 0;display:grid;gap:11px}
