@@ -6,8 +6,9 @@
    DELETE  /api/archivos          { id, i }                    borrar
 
    Los ficheros NO se enlazan directamente: la URL del blob nunca sale
-   del servidor. El panel los pide por este endpoint, que comprueba la
-   sesión antes de devolver un solo byte.
+   del servidor, y el almacén es privado —sin el token no se leen ni
+   con la URL en la mano—. El panel los pide por este endpoint, que
+   comprueba la sesión antes de devolver un solo byte.
 
    Variable de entorno: BLOB_READ_WRITE_TOKEN
    ========================================================= */
@@ -44,8 +45,13 @@ module.exports = async (req, res) => {
       const a = (lead.archivos || [])[Number(i)];
       if (!a) return res.status(404).json({ error: 'sin_archivo' });
 
-      const r = await fetch(a.url);
-      if (!r.ok) return res.status(502).json({ error: 'blob_no_responde' });
+      // el almacén es privado: el blob solo se sirve con el token
+      let r = await fetch(a.url, { headers: { authorization: `Bearer ${TOKEN}` } });
+      if (!r.ok) r = await fetch(a.url);          // por si el almacén fuera público
+      if (!r.ok) {
+        console.error('blob get', r.status);
+        return res.status(502).json({ error: 'blob_no_responde' });
+      }
       const buf = Buffer.from(await r.arrayBuffer());
       res.setHeader('Content-Type', a.tipo || 'application/octet-stream');
       res.setHeader('Content-Disposition',
@@ -76,6 +82,7 @@ module.exports = async (req, res) => {
           'x-api-version': '7',
           'x-content-type': d.tipo,
           'x-add-random-suffix': '1',
+        'x-access': 'private',
           'x-cache-control-max-age': '0'
         },
         body: bytes
