@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Agenda tu diagnóstico — VALORA Wealth Advisors</title>
+<meta name="description" content="Seis preguntas para entender tu situación y agendar tu diagnóstico patrimonial gratuito con un VALORA Partner Agent.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#081D42">
+
+<link rel="icon" href="/assets/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body class="ag-body">
+
+<header class="ag-hdr">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="VALORA — inicio">
+      <img src="/assets/mark.png" alt="" width="34">
+      <span class="brand-txt"><b>VALORA</b><span>Financial Wellness</span></span>
+    </a>
+    <a class="ag-back" href="/">← Volver al inicio</a>
+  </div>
+</header>
+
+<main class="ag-main">
+  <div class="ag-shell">
+
+    <div class="ag-progress" id="ag-progress" role="progressbar" aria-valuemin="0" aria-valuemax="7" aria-valuenow="1">
+      <div class="ag-bar"><span id="ag-bar-fill"></span></div>
+      <p class="ag-step-count"><b id="ag-n">1</b> de 7</p>
+    </div>
+
+    <form id="ag-form" novalidate>
+
+      <!-- 1 -->
+      <section class="ag-step is-on" data-step="1" data-key="objetivo">
+        <p class="eyebrow">Tu prioridad</p>
+        <h1 class="ag-q">¿Qué te preocupa más hoy?</h1>
+        <div class="ag-opts">
+          <button type="button" class="ag-opt" data-value="Proteger a mi familia si yo falto" data-score="2">
+            <b>Proteger a mi familia</b><span>Que no les falte nada si yo no estoy</span></button>
+          <button type="button" class="ag-opt" data-value="Hacer crecer mi dinero" data-score="2">
+            <b>Hacer crecer mi dinero</b><span>Acumular patrimonio con lo que ya aporto</span></button>
+          <button type="button" class="ag-opt" data-value="Prepararme para el retiro" data-score="2">
+            <b>Prepararme para el retiro</b><span>Ingreso estable cuando deje de trabajar</span></button>
+          <button type="button" class="ag-opt" data-value="Todavía no lo tengo claro" data-score="1">
+            <b>Todavía no lo tengo claro</b><span>Quiero orientación antes de decidir</span></button>
+        </div>
+      </section>
+
+      <!-- 2 -->
+      <section class="ag-step" data-step="2" data-key="etapa">
+        <p class="eyebrow">Tu momento</p>
+        <h1 class="ag-q">¿En qué etapa de tu vida estás?</h1>
+        <div class="ag-opts">
+          <button type="button" class="ag-opt" data-value="Empezando · sin hijos" data-score="1">
+            <b>Empezando</b><span>Sin hijos, construyendo mi camino</span></button>
+          <button type="button" class="ag-opt" data-value="Con hijos pequeños" data-score="3">
+            <b>Con hijos pequeños</b><span>Mi familia depende de mi ingreso</span></button>
+          <button type="button" class="ag-opt" data-value="Hijos en colegio o universidad" data-score="3">
+            <b>Hijos en colegio o universidad</b><span>Gastos educativos por delante</span></button>
+          <button type="button" class="ag-opt" data-value="Cerca del retiro" data-score="2">
+            <b>Cerca del retiro</b><span>Pensando en cómo cerrar bien</span></button>
+        </div>
+      </section>
+
+      <!-- 3 -->
+      <section class="ag-step" data-step="3" data-key="residencia">
+        <p class="eyebrow">Dónde vives</p>
+        <h1 class="ag-q">¿Dónde resides actualmente?</h1>
+        <div class="ag-field">
+          <label for="ag-res">Estado o país</label>
+          <select id="ag-res">
+            <option value="">Selecciona tu estado o país</option>
+            <optgroup label="USA">
+              <option>Florida</option><option>Texas</option><option>California</option>
+              <option>New York</option><option>Georgia</option><option>Otro estado</option>
+            </optgroup>
+            <optgroup label="LATAM">
+              <option>Colombia</option><option>Venezuela</option><option>México</option>
+              <option>Argentina</option><option>Perú</option><option>Otro país</option>
+            </optgroup>
+          </select>
+        </div>
+        <button type="button" class="btn btn-gold ag-next" disabled>Continuar<span class="ar">→</span></button>
+      </section>
+
+      <!-- 4 -->
+      <section class="ag-step" data-step="4" data-key="estatus">
+        <p class="eyebrow">Elegibilidad</p>
+        <h1 class="ag-q">¿Cuál es tu situación en USA?</h1>
+        <p class="ag-help">Nos ayuda a saber qué compañías pueden emitirte una póliza. Muchas aceptan
+           residentes con visa de trabajo o ITIN — por eso preguntamos, no para descartar a nadie.</p>
+        <div class="ag-opts">
+          <button type="button" class="ag-opt" data-value="Ciudadano" data-score="3"><b>Ciudadano</b></button>
+          <button type="button" class="ag-opt" data-value="Residente · green card" data-score="3"><b>Residente · green card</b></button>
+          <button type="button" class="ag-opt" data-value="Visa de trabajo" data-score="2"><b>Visa de trabajo</b></button>
+          <button type="button" class="ag-opt" data-value="ITIN" data-score="2"><b>ITIN</b></button>
+          <button type="button" class="ag-opt" data-value="Vivo fuera de USA" data-score="2"><b>Vivo fuera de USA</b></button>
+          <button type="button" class="ag-opt" data-value="Prefiero conversarlo" data-score="1"><b>Prefiero conversarlo en la cita</b></button>
+        </div>
+      </section>
+
+      <!-- 5 -->
+      <section class="ag-step" data-step="5" data-key="presupuesto">
+        <p class="eyebrow">Tu capacidad</p>
+        <h1 class="ag-q">¿Cuánto podrías destinar al mes?</h1>
+        <p class="ag-help">No es un compromiso. Sirve para diseñarte algo realista desde el primer día.</p>
+        <div class="ag-opts">
+          <button type="button" class="ag-opt" data-value="Menos de $100" data-score="1"><b>Menos de $100</b></button>
+          <button type="button" class="ag-opt" data-value="$100 – $250" data-score="2"><b>$100 – $250</b></button>
+          <button type="button" class="ag-opt" data-value="$250 – $500" data-score="3"><b>$250 – $500</b></button>
+          <button type="button" class="ag-opt" data-value="Más de $500" data-score="4"><b>Más de $500</b></button>
+          <button type="button" class="ag-opt" data-value="Aún no lo sé" data-score="1"><b>Aún no lo sé</b></button>
+        </div>
+      </section>
+
+      <!-- 6 -->
+      <section class="ag-step" data-step="6" data-key="urgencia">
+        <p class="eyebrow">Tus tiempos</p>
+        <h1 class="ag-q">¿Cuándo te gustaría empezar?</h1>
+        <div class="ag-opts">
+          <button type="button" class="ag-opt" data-value="Este mes" data-score="4"><b>Este mes</b></button>
+          <button type="button" class="ag-opt" data-value="En los próximos 3 meses" data-score="2"><b>En los próximos 3 meses</b></button>
+          <button type="button" class="ag-opt" data-value="Solo estoy explorando" data-score="0"><b>Solo estoy explorando</b></button>
+        </div>
+      </section>
+
+      <!-- 7 -->
+      <section class="ag-step" data-step="7" data-key="cita">
+        <p class="eyebrow">Tu cita</p>
+        <h1 class="ag-q">Elige día y hora</h1>
+        <p class="ag-help">Sesión de 30–45 minutos por videollamada o teléfono.
+           Horario de Miami (ET). Un Partner Agent te confirma por WhatsApp.</p>
+
+        <p class="ag-label">Día</p>
+        <div class="ag-days" id="ag-days"></div>
+
+        <p class="ag-label">Hora</p>
+        <div class="ag-times" id="ag-times"></div>
+
+        <div class="ag-contact" id="ag-contact">
+          <p class="ag-label">Tus datos</p>
+          <div class="ag-grid">
+            <div class="ag-field"><label for="ag-nombre">Nombre y apellido *</label>
+              <input id="ag-nombre" type="text" autocomplete="name" placeholder="Ej. Juan Pérez"></div>
+            <div class="ag-field"><label for="ag-tel">WhatsApp *</label>
+              <input id="ag-tel" type="tel" autocomplete="tel" placeholder="(305) 123-4567"></div>
+            <div class="ag-field ag-full"><label for="ag-email">Email *</label>
+              <input id="ag-email" type="email" autocomplete="email" placeholder="ejemplo@email.com"></div>
+          </div>
+        </div>
+
+        <input type="text" id="ag-trap" tabindex="-1" autocomplete="off" aria-hidden="true"
+               style="position:absolute;left:-9999px;opacity:0;height:0;width:0">
+
+        <button type="submit" class="btn btn-gold ag-send" id="ag-send">Confirmar mi cita<span class="ar">→</span></button>
+        <div class="form-msg" id="ag-msg" role="status" aria-live="polite"></div>
+      </section>
+    </form>
+
+    <!-- resultado -->
+    <section class="ag-done" id="ag-done" hidden>
+      <span class="ag-check" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>
+      </span>
+      <h1 class="ag-q" id="ag-done-title">Cita solicitada</h1>
+      <p class="ag-done-when" id="ag-done-when"></p>
+      <div class="ag-reco">
+        <p class="eyebrow">Lo que vemos para ti</p>
+        <h2 id="ag-reco-name">VALORA Strategy</h2>
+        <p id="ag-reco-text"></p>
+      </div>
+      <p class="ag-done-note">Un VALORA Partner Agent te confirma por WhatsApp en menos de 24 horas.</p>
+      <a class="btn btn-ghost" href="/">Volver al inicio</a>
+    </section>
+
+    <div class="ag-nav">
+      <button type="button" class="ag-prev" id="ag-prev" hidden>← Atrás</button>
+    </div>
+  </div>
+</main>
+
+<script src="/agenda.js" defer></script>
+</body>
+</html>

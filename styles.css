@@ -1014,3 +1014,121 @@ section[id]{scroll-margin-top:96px}
 }
 
 .sys-cta{margin-top:28px}
+
+/* =========================================================
+   PÁGINA DE CITAS
+   ========================================================= */
+.ag-body{background:var(--navy);color:#EAF0FA;min-height:100vh}
+.ag-hdr{border-bottom:1px solid rgba(201,168,76,.18)}
+.ag-hdr .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:78px}
+.ag-back{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:rgba(226,235,250,.7);transition:color .2s}
+.ag-back:hover{color:var(--gold-light)}
+
+.ag-main{
+  position:relative;padding:clamp(34px,5vw,64px) var(--pad) clamp(60px,8vw,110px);
+}
+.ag-main::before{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(760px 520px at 20% 0%,rgba(40,91,203,.26),transparent 62%),
+             radial-gradient(640px 460px at 90% 90%,rgba(201,168,76,.12),transparent 60%);
+  pointer-events:none;
+}
+.ag-shell{position:relative;z-index:2;width:100%;max-width:720px;margin:0 auto}
+
+.ag-progress{display:flex;align-items:center;gap:16px;margin-bottom:clamp(28px,4vw,44px)}
+.ag-bar{flex:1;height:2px;background:rgba(255,255,255,.12);border-radius:2px;overflow:hidden}
+.ag-bar span{
+  display:block;height:100%;width:14%;border-radius:2px;
+  background:linear-gradient(90deg,var(--gold),var(--gold-light));
+  transition:width .45s cubic-bezier(.4,0,.2,1);
+}
+.ag-step-count{font-size:11px;letter-spacing:.14em;color:rgba(226,235,250,.55);white-space:nowrap}
+.ag-step-count b{color:var(--gold-light);font-weight:600}
+
+.ag-step{display:none;animation:agIn .4s ease both}
+.ag-step.is-on{display:block}
+@keyframes agIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.ag-q{
+  font-family:var(--serif);font-size:clamp(27px,3.6vw,42px);font-weight:600;
+  line-height:1.16;color:#fff;margin-bottom:14px;
+}
+.ag-help{font-size:14px;line-height:1.72;color:rgba(226,235,250,.66);max-width:52ch;margin-bottom:26px}
+.ag-label{
+  font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);
+  margin:28px 0 14px;font-weight:600;
+}
+
+.ag-opts{display:grid;gap:12px;margin-top:26px}
+.ag-opt{
+  display:block;width:100%;text-align:left;padding:18px 22px;border-radius:var(--r);
+  background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.14);color:#fff;
+  transition:border-color .22s ease,background .22s ease,transform .22s ease;
+}
+.ag-opt b{display:block;font-size:15.5px;font-weight:600;letter-spacing:.005em}
+.ag-opt span{display:block;margin-top:5px;font-size:13px;color:rgba(226,235,250,.62)}
+.ag-opt:hover{border-color:rgba(201,168,76,.55);background:rgba(201,168,76,.08);transform:translateX(3px)}
+.ag-opt.is-sel{border-color:var(--gold);background:rgba(201,168,76,.14)}
+
+.ag-field{display:flex;flex-direction:column;gap:8px;margin-top:22px}
+.ag-field label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(230,206,140,.85);font-weight:600}
+.ag-field input,.ag-field select{
+  width:100%;padding:15px 16px;font-family:var(--sans);font-size:15px;color:#fff;
+  background:rgba(8,29,66,.6);border:1px solid rgba(255,255,255,.16);border-radius:var(--r);
+  appearance:none;transition:border-color .2s,box-shadow .2s;
+}
+.ag-field select{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C9A84C' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 16px center;background-size:12px;padding-right:42px;
+}
+.ag-field select option{background:#0B2450;color:#fff}
+.ag-field select optgroup{background:#081D42;color:var(--gold);font-style:normal}
+.ag-field input::placeholder{color:rgba(226,235,250,.34)}
+.ag-field input:focus,.ag-field select:focus{outline:0;border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,.16)}
+.ag-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ag-grid .ag-field{margin-top:0}
+.ag-full{grid-column:1/-1}
+
+.ag-days{display:flex;flex-wrap:wrap;gap:10px}
+.ag-times{display:flex;flex-wrap:wrap;gap:10px}
+.ag-chip{
+  border-radius:var(--r);border:1px solid rgba(255,255,255,.16);color:#fff;
+  background:rgba(255,255,255,.04);transition:border-color .2s,background .2s,transform .2s;
+}
+.ag-chip:hover{border-color:rgba(201,168,76,.55);transform:translateY(-2px)}
+.ag-chip.is-sel{border-color:var(--gold);background:rgba(201,168,76,.16)}
+.ag-day{display:flex;flex-direction:column;align-items:center;gap:2px;padding:11px 15px;min-width:60px}
+.ag-day span{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:rgba(226,235,250,.55)}
+.ag-day b{font-family:var(--serif);font-size:20px;font-weight:600;line-height:1}
+.ag-day small{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(226,235,250,.45)}
+.ag-time{padding:13px 18px;font-size:13.5px;font-weight:500}
+
+.ag-contact{margin-top:30px;padding-top:26px;border-top:1px solid rgba(255,255,255,.1)}
+.ag-next,.ag-send{margin-top:28px;width:100%;justify-content:center}
+.ag-nav{margin-top:26px}
+.ag-prev{
+  background:none;border:0;padding:8px 0;color:rgba(226,235,250,.6);
+  font-size:12px;letter-spacing:.1em;text-transform:uppercase;transition:color .2s;
+}
+.ag-prev:hover{color:var(--gold-light)}
+
+.ag-done{text-align:center;animation:agIn .5s ease both}
+.ag-check{
+  display:grid;place-items:center;width:66px;height:66px;border-radius:50%;margin:0 auto 26px;
+  border:1px solid rgba(201,168,76,.5);background:rgba(201,168,76,.12);color:var(--gold-light);
+}
+.ag-check svg{width:30px;height:30px}
+.ag-done-when{
+  font-family:var(--serif);font-size:clamp(19px,2.2vw,25px);color:var(--gold-light);margin-top:6px;
+}
+.ag-reco{
+  margin:34px auto 0;max-width:520px;text-align:left;padding:26px 28px;border-radius:var(--r);
+  border:1px solid rgba(201,168,76,.28);background:rgba(255,255,255,.04);
+}
+.ag-reco h2{font-family:var(--serif);font-size:26px;font-weight:600;color:#fff;margin-bottom:10px}
+.ag-reco p{font-size:14.5px;line-height:1.75;color:rgba(226,235,250,.74)}
+.ag-done-note{margin:28px 0 26px;font-size:13.5px;color:rgba(226,235,250,.6)}
+
+@media (max-width:560px){
+  .ag-grid{grid-template-columns:1fr}
+  .ag-day{min-width:54px;padding:10px 12px}
+}

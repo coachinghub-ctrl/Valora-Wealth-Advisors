@@ -115,26 +115,19 @@
     data.pagina = location.href;
 
     send.disabled = true;
-    send.innerHTML = 'Enviando…';
+    send.innerHTML = 'Continuando…';
     msg.className = 'form-msg';
 
+    // el lead queda registrado aunque abandone el diagnóstico
     fetch('/api/lead', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     })
-      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, body: j }; }); })
-      .then(function (res) {
-        if (!res.ok) throw new Error((res.body && res.body.error) || 'error');
-        form.reset();
-        show('ok', '<b>Recibido.</b> Un VALORA Partner Agent te contactará en menos de 24 horas por WhatsApp. Gracias por confiar en nosotros.');
-      })
-      .catch(function () {
-        show('bad', 'No pudimos enviar tu solicitud en este momento.' + contactLine());
-      })
+      .catch(function () { /* si falla, /agenda lo vuelve a capturar */ })
       .then(function () {
-        send.disabled = false;
-        send.innerHTML = label;
+        try { sessionStorage.setItem('valora_lead', JSON.stringify(data)); } catch (e) {}
+        location.href = '/agenda';
       });
   });
 
