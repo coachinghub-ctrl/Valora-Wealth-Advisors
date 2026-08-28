@@ -1181,7 +1181,8 @@ section[id]{scroll-margin-top:96px}
   text-transform:uppercase;color:var(--gold);margin-bottom:16px;
 }
 /* el rótulo de Financial Wellness encabeza un bloque mayor */
-.fw .cre-tag{font-size:15px;letter-spacing:.16em;margin-bottom:18px}
+/* el color va explícito: .fw-txt p le ganaba al dorado de .cre-tag */
+.fw .cre-tag{font-size:15px;letter-spacing:.16em;margin-bottom:18px;color:var(--gold)}
 .cre p:last-child{font-size:14px;line-height:1.78;color:rgba(226,235,250,.76)}
 
 .valores{
