@@ -1210,29 +1210,35 @@ section[id]{scroll-margin-top:96px}
    ========================================================= */
 .rutas-head{max-width:720px}
 .rutas-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:44px}
+/* tarjetas blancas sobre el azul de marca */
 .ruta{
-  background:rgba(255,255,255,.04);border:1px solid rgba(201,168,76,.24);
+  background:var(--white);border:1px solid rgba(8,29,66,.06);
+  box-shadow:0 1px 2px rgba(0,0,0,.06),0 18px 40px -28px rgba(0,0,0,.55);
   border-radius:var(--r);padding:clamp(28px,3.2vw,42px);display:flex;flex-direction:column;
-  transition:border-color .3s ease,transform .3s ease,background .3s ease;
+  transition:border-color .3s ease,transform .3s ease,box-shadow .3s ease;
 }
-.ruta:hover{border-color:rgba(201,168,76,.55);transform:translateY(-4px);background:rgba(255,255,255,.06)}
+.ruta:hover{
+  border-color:rgba(201,168,76,.4);transform:translateY(-5px);
+  box-shadow:0 1px 2px rgba(0,0,0,.06),0 28px 60px -30px rgba(0,0,0,.6);
+}
 .ruta-ico{
   display:grid;place-items:center;width:62px;height:62px;border-radius:50%;margin-bottom:22px;
-  border:1px solid rgba(201,168,76,.4);background:rgba(201,168,76,.08);color:var(--gold-light);
+  background:linear-gradient(135deg,var(--navy),var(--navy-soft));color:var(--gold-light);
 }
 .ruta-ico svg{width:30px;height:30px}
-.ruta h3{font-family:var(--serif);font-size:clamp(24px,2.5vw,31px);font-weight:600;color:#fff}
+.ruta h3{font-family:var(--serif);font-size:clamp(24px,2.5vw,31px);font-weight:600;color:var(--navy)}
 .ruta-claim{
   margin-top:12px;font-family:var(--serif);font-size:clamp(17px,1.8vw,21px);
-  line-height:1.4;color:var(--gold-light);
+  line-height:1.4;color:var(--gold-deep);font-weight:600;
 }
-.ruta-sub{margin-top:14px;font-size:13.5px;line-height:1.7;color:rgba(226,235,250,.62)}
-.ruta ul{margin-top:24px;padding-top:22px;border-top:1px solid rgba(255,255,255,.1);display:grid;gap:9px}
-.ruta li{position:relative;padding-left:22px;font-size:13.5px;line-height:1.6;color:rgba(226,235,250,.82)}
+.ruta-sub{margin-top:14px;font-size:13.5px;line-height:1.7;color:var(--ink-3)}
+.ruta ul{margin-top:24px;padding-top:22px;border-top:1px solid rgba(8,29,66,.1);display:grid;gap:9px}
+.ruta li{position:relative;padding-left:22px;font-size:13.5px;line-height:1.6;color:var(--ink-2)}
 .ruta li::before{
   content:"";position:absolute;left:1px;top:8px;width:11px;height:6px;
-  border-left:1.5px solid var(--gold);border-bottom:1.5px solid var(--gold);transform:rotate(-45deg);
+  border-left:1.5px solid var(--gold-deep);border-bottom:1.5px solid var(--gold-deep);transform:rotate(-45deg);
 }
+.ruta .link-more{color:var(--gold-deep)}
 .ruta .link-more{margin-top:auto;padding-top:26px}
 .rutas-q{
   margin-top:clamp(38px,4.4vw,58px);text-align:center;font-family:var(--serif);
