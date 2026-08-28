@@ -1177,9 +1177,11 @@ section[id]{scroll-margin-top:96px}
 }
 .cre:hover{border-color:rgba(201,168,76,.55);background:rgba(255,255,255,.09);transform:translateY(-3px)}
 .cre-tag{
-  font-family:var(--brand);font-size:11px;font-weight:600;letter-spacing:.22em;
-  text-transform:uppercase;color:var(--gold);margin-bottom:14px;
+  font-family:var(--brand);font-size:13.5px;font-weight:700;letter-spacing:.17em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:16px;
 }
+/* el rótulo de Financial Wellness encabeza un bloque mayor */
+.fw .cre-tag{font-size:15px;letter-spacing:.16em;margin-bottom:18px}
 .cre p:last-child{font-size:14px;line-height:1.78;color:rgba(226,235,250,.76)}
 
 .valores{
